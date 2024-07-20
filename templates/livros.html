@@ -1,31 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Livros</title>
+        <link rel="stylesheet" href="../static/CSS/style.css">
+    </head>
     <body>
-        <h1>Cadastro de Livros</h1>
-        <form action="/home" method="post">
-            <label for="titulo">Título:</label>
-            <input type="text" id="titulo" name="titulo" required><br><br>
-            
-            <label for="isbn">ISBN:</label>
-            <input type="text" id="isbn" name="isbn" required><br><br>
-            
-            <label for="autor">Autor:</label>
-            <input type="text" id="autor" name="autor" required><br><br>
-            
-            <label for="genero">Gênero:</label>
-            <input type="text" id="genero" name="genero" required><br><br>
-            
-            <label for="descricao">Descrição:</label>
-            <input type="text" id="descricao" name="descricao" required><br><br>
-            
-            <input type="hidden" id="id_livro" name="id_livro">
-            <input type="submit" value="Cadastrar/Atualizar">
-        </form>
+        <h1>Livros</h1>
+        <p>Aqui você visualizar informações, editar, cadastrar e deletar seus livros.</p>
+        
+        <button class="btn-cadastro" onclick="openCadastroModal()">Cadastrar Novo Livro</button>
+        
+        <div id="cadastroModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeCadastroModal()">&times;</span>
+                <h1>Cadastro de Livro</h1>
+                <form id="cadastroForm" action="/livros" method="post">
+                    <label for="titulo">Título do livro:</label>
+                    <input type="text" id="titulo" name="titulo" required><br><br>
+                    
+                    <label for="isbn">ISBN:</label>
+                    <input type="text" id="isbn" name="isbn" required><br><br>
+                    
+                    <label for="autor">Autor:</label>
+                    <input type="text" id="autor" name="autor" required><br><br>
+                    
+                    <label for="genero">Gênero:</label>
+                    <input type="text" id="genero" name="genero" required><br><br>
+                    
+                    <label for="descricao">Descrição:</label>
+                    <input type="text" id="descricao" name="descricao" required><br><br>
+                    
+                    <input type="hidden" id="id_livro" name="id_livro">
+                    <input type="submit" value="Cadastrar">
+                </form>
+            </div>
+        </div>
+
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditModal()">&times;</span>
+                <h1>Editar Livro</h1>
+                <form id="editForm" action="/livros" method="post">
+                    <label for="edit-titulo">Título do livro:</label>
+                    <input type="text" id="edit-titulo" name="titulo" required><br><br>
+                    
+                    <label for="edit-isbn">ISBN:</label>
+                    <input type="text" id="edit-isbn" name="isbn" required><br><br>
+                    
+                    <label for="edit-autor">Autor:</label>
+                    <input type="text" id="edit-autor" name="autor" required><br><br>
+                    
+                    <label for="edit-genero">Gênero:</label>
+                    <input type="text" id="edit-genero" name="genero" required><br><br>
+                    
+                    <label for="edit-descricao">Descrição:</label>
+                    <input type="text" id="edit-descricao" name="descricao" required><br><br>
+                    
+                    <input type="hidden" id="edit-id_livro" name="id_livro">
+                    <input type="submit" value="Atualizar">
+                    <button type="button" id="deleteButton" style="display:none" onclick="deleteLivro()">Apagar Livro</button>
+                </form>
+            </div>
+        </div>
         
         <h2>Lista de Livros</h2>
         <table>
@@ -45,8 +83,7 @@
                 <td>{{ livro[4] }}</td>
                 <td>{{ livro[5] }}</td>
                 <td>
-                    <a href="/deletar_livro?id_livro={{ livro[0] }}">Deletar</a>
-                    <a href="javascript:void(0)" onclick="preencherForm('{{ livro[0] }}', '{{ livro[1] }}', '{{ livro[2] }}', '{{ livro[3] }}', '{{ livro[4] }}', '{{ livro[5] }}')">Editar</a>
+                    <a href="javascript:void(0)" onclick="openEditModal('{{ livro[0] }}', '{{ livro[1] }}', '{{ livro[2] }}', '{{ livro[3] }}', '{{ livro[4] }}', '{{ livro[5] }}')">Editar</a>
                 </td>
             </tr>
             {% endfor %}
@@ -55,15 +92,6 @@
         <a href="/logout">Logout</a>
         <a href="/home">Voltar para a home</a>
         
-        <script>
-            function preencherForm(id, titulo, isbn, autor, genero, descricao) {
-                document.getElementById('id_livro').value = id;
-                document.getElementById('titulo').value = titulo;
-                document.getElementById('isbn').value = isbn;
-                document.getElementById('autor').value = autor;
-                document.getElementById('genero').value = genero;
-                document.getElementById('descricao').value = descricao;
-            }
-        </script>
+        <script src="../static/JS/script.js"></script>
     </body>
 </html>
