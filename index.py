@@ -71,12 +71,18 @@ def livros():
         
         cursor = db.cursor()
         if id_livro:
+            # Atualiza o livro existente
             sql = "UPDATE livros SET titulo = %s, isbn = %s, autor = %s, genero = %s, descricao = %s WHERE id_livro = %s"
             cursor.execute(sql, (titulo, isbn, autor, genero, descricao, id_livro))
         else:
-            sql = "INSERT INTO livros (titulo, isbn, autor, genero, descricao) VALUES (%s, %s, %s, %s, %s)"
-            cursor.execute(sql, (titulo, isbn, autor, genero, descricao))
-        
+            # Verifica se o livro já existe antes de inserir
+            cursor.execute('SELECT COUNT(*) FROM livros WHERE isbn = %s', (isbn,))
+            if cursor.fetchone()[0] == 0:
+                sql = "INSERT INTO livros (titulo, isbn, autor, genero, descricao) VALUES (%s, %s, %s, %s, %s)"
+                cursor.execute(sql, (titulo, isbn, autor, genero, descricao))
+            else:
+                return redirect("/livros")  # Evita duplicação
+
         db.commit()
 
     cursor = db.cursor()
@@ -84,6 +90,7 @@ def livros():
     cursor.execute(sql)
     results = cursor.fetchall()
     return render_template("livros.html", livros=results)
+
 
 @app.route("/deletar_livro", methods=['GET'])
 def deletar_livro():
