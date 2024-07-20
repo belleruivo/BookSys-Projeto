@@ -6,63 +6,13 @@
     <title>Home</title>
 </head>
     <body>
-        <h1>Cadastro de Livros</h1>
-        <form action="/home" method="post">
-            <label for="titulo">Título:</label>
-            <input type="text" id="titulo" name="titulo" required><br><br>
-            
-            <label for="isbn">ISBN:</label>
-            <input type="text" id="isbn" name="isbn" required><br><br>
-            
-            <label for="autor">Autor:</label>
-            <input type="text" id="autor" name="autor" required><br><br>
-            
-            <label for="genero">Gênero:</label>
-            <input type="text" id="genero" name="genero" required><br><br>
-            
-            <label for="descricao">Descrição:</label>
-            <input type="text" id="descricao" name="descricao" required><br><br>
-            
-            <input type="hidden" id="id_livro" name="id_livro">
-            <input type="submit" value="Cadastrar/Atualizar">
-        </form>
+        <h1>Home</h1>
         
-        <h2>Lista de Livros</h2>
-        <table>
-            <tr>
-                <th>Título</th>
-                <th>ISBN</th>
-                <th>Autor</th>
-                <th>Gênero</th>
-                <th>Descrição</th>
-                <th>Ações</th>
-            </tr>
-            {% for livro in livros %}
-            <tr>
-                <td>{{ livro[1] }}</td>
-                <td>{{ livro[2] }}</td>
-                <td>{{ livro[3] }}</td>
-                <td>{{ livro[4] }}</td>
-                <td>{{ livro[5] }}</td>
-                <td>
-                    <a href="/deletar_livro?id_livro={{ livro[0] }}">Deletar</a>
-                    <a href="javascript:void(0)" onclick="preencherForm('{{ livro[0] }}', '{{ livro[1] }}', '{{ livro[2] }}', '{{ livro[3] }}', '{{ livro[4] }}', '{{ livro[5] }}')">Editar</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-        
-        <a href="/logout">Logout</a>
+        <a href="/logout">Logout</a><br>
+        <a href="/livros">Livros</a>
         
         <script>
-            function preencherForm(id, titulo, isbn, autor, genero, descricao) {
-                document.getElementById('id_livro').value = id;
-                document.getElementById('titulo').value = titulo;
-                document.getElementById('isbn').value = isbn;
-                document.getElementById('autor').value = autor;
-                document.getElementById('genero').value = genero;
-                document.getElementById('descricao').value = descricao;
-            }
+          
         </script>
     </body>
 </html>

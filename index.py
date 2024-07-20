@@ -49,8 +49,15 @@ def cadastro():
     
     return render_template("cadastro.html")
 
-@app.route("/home", methods=['GET', 'POST'])
+@app.route("/home")
 def home():
+    if 'id' not in session:
+        return redirect("/")
+    return render_template("home.html")
+
+
+@app.route("/livros", methods=['GET', 'POST'])
+def livros():
     if 'id' not in session:
         return redirect("/")
     
@@ -76,7 +83,7 @@ def home():
     sql = "SELECT * FROM livros"
     cursor.execute(sql)
     results = cursor.fetchall()
-    return render_template("home.html", livros=results)
+    return render_template("livros.html", livros=results)
 
 @app.route("/deletar_livro", methods=['GET'])
 def deletar_livro():
@@ -88,7 +95,7 @@ def deletar_livro():
     sql = "DELETE FROM livros WHERE id_livro = %s"
     cursor.execute(sql, (id_livro,))
     db.commit()
-    return redirect("/home")
+    return redirect("/livros")
 
 if __name__ == "__main__":
     app.run(debug=True)
