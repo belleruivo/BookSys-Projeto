@@ -95,10 +95,10 @@ def livros():
 
         # db.commit()
 
-    cursor = db.cursor()
-    sql = "SELECT * FROM livros WHERE disponivel = 1"
-    cursor.execute(sql)
-    results = cursor.fetchall()
+    # cursor = db.cursor()
+    # sql = "SELECT * FROM livros WHERE disponivel = 1"
+    # cursor.execute(sql)
+    # results = cursor.fetchall()
     return render_template("livros.html", livros=results)
 
 @app.route("/deletar_livro", methods=['GET'])
