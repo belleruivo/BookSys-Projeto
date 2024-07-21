@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Meu Projeto{% endblock %}</title>
+    <title>{% block title %}BookSys{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"> <!-- CSS comum -->
     {% block styles %}
     <!-- Folhas de estilo específicas serão inseridas aqui -->
@@ -20,7 +20,8 @@
             <ul class="navbar-menu">
                 <li class="navbar-item"><a href="{{ url_for('home') }}" class="navbar-link">Home</a></li>
                 <li class="navbar-item"><a href="{{ url_for('livros') }}" class="navbar-link">Livros</a></li>
-                <!-- <li class="navbar-item"><a href="{{ url_for('cadastro') }}" class="navbar-link">Cadastro</a></li> -->
+                <li class="navbar-item"><a href="{{ url_for('emprestimos') }}" class="navbar-link">Emprestimos</a></li>
+                <!-- <li class="navbar-item"><a href="{{ url_for('emprestimos') }}" class="navbar-link">Emprestimos</a></li> -->
                 {% if 'id' in session %}
                     <li class="navbar-item"><a href="{{ url_for('logout') }}" class="navbar-link">Logout</a></li>
                 {% else %}

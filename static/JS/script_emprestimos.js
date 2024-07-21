@@ -1,38 +1,32 @@
+// Funções para abrir e fechar o modal de cadastro
 function openCadastroModal() {
-    document.getElementById('cadastroModal').style.display = "block";
+    document.getElementById("cadastroModal").style.display = "block";
 }
 
 function closeCadastroModal() {
-    document.getElementById('cadastroModal').style.display = "none";
+    document.getElementById("cadastroModal").style.display = "none";
 }
 
-function openEditModal(id, nome_usuario, nome_livro, data_emprestimo, data_devolucao) {
-    document.getElementById('edit-id_emprestimo').value = id;
-    document.getElementById('edit-nome_usuario').value = nome_usuario;
-    document.getElementById('edit-nome_livro').value = nome_livro;
-    document.getElementById('edit-data_emprestimo').value = data_emprestimo;
-    document.getElementById('edit-data_devolucao').value = data_devolucao;
-    
-    document.getElementById('editModal').style.display = "block";
-    document.getElementById('devolucaoButton').style.display = "inline";
+// Funções para abrir e fechar o modal de edição
+function openEditarModal(id_emprestimo, nome_usuario, id_livro, data_emprestimo, data_devolucao) {
+    document.getElementById("editarModal").style.display = "block";
+    document.getElementById("edit_id_emprestimo").value = id_emprestimo;
+    document.getElementById("edit_nome_usuario").value = nome_usuario;
+    document.getElementById("edit_id_livro").value = id_livro;
+    document.getElementById("edit_data_emprestimo").value = data_emprestimo;
+    document.getElementById("edit_data_devolucao").value = data_devolucao;
 }
 
-function closeEditModal() {
-    document.getElementById('editModal').style.display = "none";
-    document.getElementById('devolucaoButton').style.display = "none";
+function closeEditarModal() {
+    document.getElementById("editarModal").style.display = "none";
 }
 
-function confirmarDevolucao(id) {
-    if (confirm("Tem certeza de que deseja confirmar a devolução deste empréstimo?")) {
-        window.location.href = "/confirmar_devolucao?id_emprestimo=" + id;
-    }
-}
-
+// Fechar modais ao clicar fora do conteúdo
 window.onclick = function(event) {
-    if (event.target == document.getElementById('cadastroModal')) {
+    if (event.target == document.getElementById("cadastroModal")) {
         closeCadastroModal();
     }
-    if (event.target == document.getElementById('editModal')) {
-        closeEditModal();
+    if (event.target == document.getElementById("editarModal")) {
+        closeEditarModal();
     }
 }

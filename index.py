@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, session
-# import pymysql
 
 app = Flask(__name__)
 
@@ -7,6 +6,27 @@ app.secret_key = 'eqwivcerldasdkjkgtirrewruywu'
 # db = pymysql.connect(host="localhost", user="root", password="", database="projetoflask")
 
 usuarios = [{'id': 1, 'email': 'usuario@example.com', 'senha': 'senha123', 'nome': 'Usuário Exemplo'}]
+livros_mockados = [
+    {'id': 1, 'titulo': 'Livro 1', 'isbn': '1234567890', 'autor': 'Autor 1', 'genero': 'Ficção', 'descricao': 'Descrição 1', 'disponivel': True},
+    {'id': 2, 'titulo': 'Livro 2', 'isbn': '0987654321', 'autor': 'Autor 2', 'genero': 'Drama', 'descricao': 'Descrição 2', 'disponivel': True},
+    {'id': 3, 'titulo': 'Livro 3', 'isbn': '1234567890', 'autor': 'Autor 1', 'genero': 'Ficção', 'descricao': 'Descrição 1', 'disponivel': True},
+    {'id': 4, 'titulo': 'Livro 4', 'isbn': '0987654321', 'autor': 'Autor 2', 'genero': 'Drama', 'descricao': 'Descrição 2', 'disponivel': True},
+    {'id': 5, 'titulo': 'Livro 5', 'isbn': '1234567890', 'autor': 'Autor 1', 'genero': 'Ficção', 'descricao': 'Descrição 1', 'disponivel': True},
+    {'id': 6, 'titulo': 'Livro 6', 'isbn': '0987654321', 'autor': 'Autor 2', 'genero': 'Drama', 'descricao': 'Descrição 2', 'disponivel': True},
+    {'id': 7, 'titulo': 'Livro 7', 'isbn': '0987654321', 'autor': 'Autor 2', 'genero': 'Drama', 'descricao': 'Descrição 2', 'disponivel': True},
+    {'id': 8, 'titulo': 'Livro 8', 'isbn': '1234567890', 'autor': 'Autor 1', 'genero': 'Ficção', 'descricao': 'Descrição 1', 'disponivel': True},
+]
+
+emprestimos_mockados = [
+    {'id_emprestimo': 1, 'nome_usuario': 'João Silva', 'id_livro': 1, 'data_emprestimo': '2024-01-10', 'data_devolucao': '2024-02-10'},
+    {'id_emprestimo': 2, 'nome_usuario': 'Maria Oliveira', 'id_livro': 2, 'data_emprestimo': '2024-02-01', 'data_devolucao': '2024-03-01'},
+    {'id_emprestimo': 3, 'nome_usuario': 'Carlos Pereira', 'id_livro': 3, 'data_emprestimo': '2024-03-15', 'data_devolucao': '2024-04-15'},
+    {'id_emprestimo': 4, 'nome_usuario': 'Ana Costa', 'id_livro': 4, 'data_emprestimo': '2024-04-01', 'data_devolucao': '2024-05-01'},
+    {'id_emprestimo': 5, 'nome_usuario': 'Fernanda Souza', 'id_livro': 5, 'data_emprestimo': '2024-05-10', 'data_devolucao': '2024-06-10'},
+    {'id_emprestimo': 6, 'nome_usuario': 'Pedro Santos', 'id_livro': 6, 'data_emprestimo': '2024-06-20', 'data_devolucao': '2024-07-20'},
+    {'id_emprestimo': 7, 'nome_usuario': 'Fernanda Souza', 'id_livro': 5, 'data_emprestimo': '2024-05-10', 'data_devolucao': '2024-06-10'},
+    {'id_emprestimo': 8, 'nome_usuario': 'Pedro Santos', 'id_livro': 6, 'data_emprestimo': '2024-06-20', 'data_devolucao': '2024-07-20'},
+]
 
 @app.route("/", methods=['GET', 'POST'])
 def login():
@@ -14,16 +34,6 @@ def login():
         email = request.form.get('email')
         senha = request.form.get('senha')
         
-        # cursor = db.cursor()
-        # sql = "SELECT * FROM usuarios WHERE email = %s AND senha = %s"
-        # cursor.execute(sql, (email, senha))
-        # usuario = cursor.fetchone()
-        
-        # if usuario:
-        #     session['id'] = usuario[0]  # Armazena o ID do usuário na sessão
-        #     return redirect("/home")
-        # else:
-        #     return "Credenciais inválidas. Verifique seu email e senha e tente novamente."
         usuario = next((u for u in usuarios if u['email'] == email and u['senha'] == senha), None)
         if usuario:
             session['id'] = usuario['id']
@@ -47,10 +57,7 @@ def cadastro():
         senha = request.form.get('senha')
         
         if email == confirm_email:
-            # cursor = db.cursor()
-            # sql = "INSERT INTO usuarios (nome, email, senha) VALUES (%s, %s, %s)"
-            # cursor.execute(sql, (nome, email, senha))
-            # db.commit()
+            usuarios.append({'id': len(usuarios) + 1, 'email': email, 'senha': senha, 'nome': nome})
             return redirect("/")
         else:
             return "Os emails não correspondem!"
@@ -67,7 +74,7 @@ def home():
 def livros():
     if 'id' not in session:
         return redirect("/")
-    
+
     if request.method == 'POST':
         id_livro = request.form.get('id_livro')
         titulo = request.form.get('titulo')
@@ -75,31 +82,45 @@ def livros():
         autor = request.form.get('autor')
         genero = request.form.get('genero')
         descricao = request.form.get('descricao')
-        
-        # cursor = db.cursor()
+
         if id_livro:
-            # Atualiza o livro existente
-            # sql = "UPDATE livros SET titulo = %s, isbn = %s, autor = %s, genero = %s, descricao = %s WHERE id_livro = %s"
-            # cursor.execute(sql, (titulo, isbn, autor, genero, descricao, id_livro))
-            pass
+            id_livro = int(id_livro)
+            for livro in livros_mockados:
+                if livro['id'] == id_livro:
+                    livro.update({
+                        'titulo': titulo,
+                        'isbn': isbn,
+                        'autor': autor,
+                        'genero': genero,
+                        'descricao': descricao
+                    })
+                    break
         else:
-            # Verifica se o livro já existe antes de inserir
-            cursor.execute('SELECT COUNT(*) FROM livros WHERE isbn = %s', (isbn,))
-            if cursor.fetchone()[0] == 0:
-                sql = "INSERT INTO livros (titulo, isbn, autor, genero, descricao, disponivel) VALUES (%s, %s, %s, %s, %s, 1)"
-                cursor.execute(sql, (titulo, isbn, autor, genero, descricao))
+            if not any(livro['isbn'] == isbn for livro in livros_mockados):
+                novo_livro = {
+                    'id': len(livros_mockados) + 1,
+                    'titulo': titulo,
+                    'isbn': isbn,
+                    'autor': autor,
+                    'genero': genero,
+                    'descricao': descricao,
+                    'disponivel': True
+                }
+                livros_mockados.append(novo_livro)
             else:
-                return redirect("/livros")  # Evita duplicação
+                return redirect("/livros")
 
-            pass
+    search_query = request.args.get('search', '').lower()
+    
+    results = [
+        livro for livro in livros_mockados if livro['disponivel'] and (
+            search_query in livro['titulo'].lower() or
+            search_query in livro['autor'].lower() or
+            search_query in livro['isbn']
+        )
+    ]
 
-        # db.commit()
-
-    # cursor = db.cursor()
-    # sql = "SELECT * FROM livros WHERE disponivel = 1"
-    # cursor.execute(sql)
-    # results = cursor.fetchall()
-    return render_template("livros.html", livros=results)
+    return render_template("livros.html", livros=results, show_navbar=True)
 
 @app.route("/deletar_livro", methods=['GET'])
 def deletar_livro():
@@ -107,10 +128,8 @@ def deletar_livro():
         return redirect("/")
     
     id_livro = request.args.get('id_livro')
-    # cursor = db.cursor()
-    # sql = "DELETE FROM livros WHERE id_livro = %s"
-    # cursor.execute(sql, (id_livro,))
-    # db.commit()
+    global livros_mockados
+    livros_mockados = [livro for livro in livros_mockados if livro['id'] != int(id_livro)]
     return redirect("/livros")
 
 @app.route("/emprestimos", methods=['GET', 'POST'])
@@ -125,32 +144,38 @@ def emprestimos():
         data_devolucao = request.form.get('data_devolucao')
 
         if nome_usuario and id_livro and data_emprestimo and data_devolucao:
-            cursor = db.cursor()
+            id_livro = int(id_livro)
+            emprestimos_mockados.append({
+                'id_emprestimo': len(emprestimos_mockados) + 1,
+                'nome_usuario': nome_usuario,
+                'id_livro': id_livro,
+                'data_emprestimo': data_emprestimo,
+                'data_devolucao': data_devolucao
+            })
             
-            # Adiciona um novo empréstimo
-            sql = """INSERT INTO emprestimos (nome_usuario, id_livro, data_emprestimo, data_devolucao)
-                     VALUES (%s, %s, %s, %s)"""
-            cursor.execute(sql, (nome_usuario, id_livro, data_emprestimo, data_devolucao))
-            db.commit()
-            
-            # Atualiza a disponibilidade do livro
-            cursor.execute("UPDATE livros SET disponivel = 0 WHERE id_livro = %s", (id_livro,))
-            db.commit()
+            for livro in livros_mockados:
+                if livro['id'] == id_livro:
+                    livro['disponivel'] = False
+                    break
         else:
             return "Todos os campos são obrigatórios!"
 
-    cursor = db.cursor()
-    # Consulta modificada para incluir o nome do livro
-    sql = """SELECT emprestimos.id_emprestimo, emprestimos.nome_usuario, livros.titulo, emprestimos.data_emprestimo, emprestimos.data_devolucao
-             FROM emprestimos
-             JOIN livros ON emprestimos.id_livro = livros.id_livro"""
-    cursor.execute(sql)
-    emprestimos = cursor.fetchall()
+    emprestimos_exibidos = [
+        {
+            'id_emprestimo': emp['id_emprestimo'],
+            'nome_usuario': emp['nome_usuario'],
+            'id_livro': emp['id_livro'],
+            'titulo': next(livro['titulo'] for livro in livros_mockados if livro['id'] == emp['id_livro']),
+            'data_emprestimo': emp['data_emprestimo'],
+            'data_devolucao': emp['data_devolucao']
+        }
+        for emp in emprestimos_mockados
+    ]
 
-    cursor.execute("SELECT * FROM livros WHERE disponivel = 1")
-    livros_disponiveis = cursor.fetchall()
+    livros_disponiveis = [livro for livro in livros_mockados if livro['disponivel']]
 
-    return render_template("emprestimos.html", emprestimos=emprestimos, livros=livros_disponiveis)
+    return render_template("emprestimos.html", emprestimos=emprestimos_exibidos, livros=livros_disponiveis, show_navbar=True)
+
 
 @app.route("/editar_emprestimo", methods=['POST'])
 def editar_emprestimo():
@@ -163,12 +188,17 @@ def editar_emprestimo():
     data_emprestimo = request.form.get('data_emprestimo')
     data_devolucao = request.form.get('data_devolucao')
     
-    cursor = db.cursor()
-    sql = """UPDATE emprestimos
-             SET nome_usuario = %s, id_livro = %s, data_emprestimo = %s, data_devolucao = %s
-             WHERE id_emprestimo = %s"""
-    cursor.execute(sql, (nome_usuario, id_livro, data_emprestimo, data_devolucao, id_emprestimo))
-    db.commit()
+    id_emprestimo = int(id_emprestimo)
+    
+    for emp in emprestimos_mockados:
+        if emp['id_emprestimo'] == id_emprestimo:
+            emp.update({
+                'nome_usuario': nome_usuario,
+                'id_livro': int(id_livro),
+                'data_emprestimo': data_emprestimo,
+                'data_devolucao': data_devolucao
+            })
+            break
     
     return redirect("/emprestimos")
 
@@ -178,18 +208,19 @@ def confirmar_devolucao():
         return redirect("/")
     
     id_emprestimo = request.args.get('id_emprestimo')
+    id_emprestimo = int(id_emprestimo)
     
-    cursor = db.cursor()
-    cursor.execute("SELECT id_livro FROM emprestimos WHERE id_emprestimo = %s", (id_emprestimo,))
-    id_livro = cursor.fetchone()[0]
-    
-    # Remove o empréstimo
-    cursor.execute("DELETE FROM emprestimos WHERE id_emprestimo = %s", (id_emprestimo,))
-    db.commit()
-    
-    # Atualiza a disponibilidade do livro
-    cursor.execute("UPDATE livros SET disponivel = 1 WHERE id_livro = %s", (id_livro,))
-    db.commit()
+    global emprestimos_mockados
+    emprestimo = next((emp for emp in emprestimos_mockados if emp['id_emprestimo'] == id_emprestimo), None)
+    if emprestimo:
+        id_livro = emprestimo['id_livro']
+        
+        emprestimos_mockados = [emp for emp in emprestimos_mockados if emp['id_emprestimo'] != id_emprestimo]
+        
+        for livro in livros_mockados:
+            if livro['id'] == id_livro:
+                livro['disponivel'] = True
+                break
     
     return redirect("/emprestimos")
 

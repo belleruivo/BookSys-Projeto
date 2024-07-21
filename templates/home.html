@@ -2,6 +2,36 @@
 
 {% block title %}Home{% endblock %}
 
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
 {% block content %}
-<h1>Home</h1>
+<div class="home-container">
+    <img src="{{ url_for('static', filename='images/home-image.jpg') }}" alt="Descrição da imagem" class="home-image">
+    <h1>Bem-vindo(a) ao BookSys</h1>
+    <div class="intro-text">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet dolor libero, eget venenatis mauris finibus dictum. Vestibulum quis elit quis purus varius mollis. Curabitur ultricies diam libero, eget fringilla felis dapibus at.</p>
+        <p>Praesent nec nunc nec justo volutpat tincidunt. Suspendisse potenti. Nulla facilisi. Cras eu est ac libero aliquam tincidunt. Maecenas non nisi sit amet ipsum pellentesque ultricies. Integer vel turpis a urna vehicula cursus a nec libero.</p>
+        <p>Mauris eu dui at ante tincidunt luctus. Duis ultrices turpis ac ex blandit, vel luctus erat dignissim. Phasellus et nulla ac risus suscipit convallis. Curabitur nec velit sit amet risus suscipit feugiat. Aliquam erat volutpat.</p>
+        <p>Quisque sollicitudin, nisl at hendrerit tincidunt, metus erat malesuada nunc, non porttitor nulla ante nec mauris. Proin vehicula, sapien ut tincidunt venenatis, risus lacus blandit dui, eu viverra nisi leo non lectus.</p>
+    </div>
+    <div class="card-container">
+        <div class="card">
+            <h2>Nossos Serviços</h2>
+            <p>Descubra a variedade de serviços que oferecemos.</p>
+            <button>Saiba Mais</button>
+        </div>
+        <div class="card">
+            <h2>Sobre Nós</h2>
+            <p>Conheça mais sobre a nossa missão, visão e valores.</p>
+            <button>Leia Mais</button>
+        </div>
+        <div class="card">
+            <h2>Contato</h2>
+            <p>Entre em contato conosco para mais informações e suporte.</p>
+            <button>Contate-nos</button>
+        </div>
+    </div>
+</div>
 {% endblock %}
