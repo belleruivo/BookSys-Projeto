@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, redirect, session
-import pymysql
+# import pymysql
 
 app = Flask(__name__)
 
 app.secret_key = 'eqwivcerldasdkjkgtirrewruywu'
-db = pymysql.connect(host="localhost", user="root", password="", database="projetoflask")
+# db = pymysql.connect(host="localhost", user="root", password="", database="projetoflask")
+
+usuarios = [{'id': 1, 'email': 'usuario@example.com', 'senha': 'senha123', 'nome': 'Usuário Exemplo'}]
 
 @app.route("/", methods=['GET', 'POST'])
 def login():
@@ -12,17 +14,23 @@ def login():
         email = request.form.get('email')
         senha = request.form.get('senha')
         
-        cursor = db.cursor()
-        sql = "SELECT * FROM usuarios WHERE email = %s AND senha = %s"
-        cursor.execute(sql, (email, senha))
-        usuario = cursor.fetchone()
+        # cursor = db.cursor()
+        # sql = "SELECT * FROM usuarios WHERE email = %s AND senha = %s"
+        # cursor.execute(sql, (email, senha))
+        # usuario = cursor.fetchone()
         
+        # if usuario:
+        #     session['id'] = usuario[0]  # Armazena o ID do usuário na sessão
+        #     return redirect("/home")
+        # else:
+        #     return "Credenciais inválidas. Verifique seu email e senha e tente novamente."
+        usuario = next((u for u in usuarios if u['email'] == email and u['senha'] == senha), None)
         if usuario:
-            session['id'] = usuario[0]  # Armazena o ID do usuário na sessão
+            session['id'] = usuario['id']
             return redirect("/home")
         else:
             return "Credenciais inválidas. Verifique seu email e senha e tente novamente."
-    
+        
     return render_template("login.html")
 
 @app.route("/logout")
@@ -39,10 +47,10 @@ def cadastro():
         senha = request.form.get('senha')
         
         if email == confirm_email:
-            cursor = db.cursor()
-            sql = "INSERT INTO usuarios (nome, email, senha) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (nome, email, senha))
-            db.commit()
+            # cursor = db.cursor()
+            # sql = "INSERT INTO usuarios (nome, email, senha) VALUES (%s, %s, %s)"
+            # cursor.execute(sql, (nome, email, senha))
+            # db.commit()
             return redirect("/")
         else:
             return "Os emails não correspondem!"
@@ -53,8 +61,7 @@ def cadastro():
 def home():
     if 'id' not in session:
         return redirect("/")
-    return render_template("home.html")
-
+    return render_template("home.html", show_navbar=True)
 
 @app.route("/livros", methods=['GET', 'POST'])
 def livros():
@@ -69,28 +76,31 @@ def livros():
         genero = request.form.get('genero')
         descricao = request.form.get('descricao')
         
-        cursor = db.cursor()
+        # cursor = db.cursor()
         if id_livro:
             # Atualiza o livro existente
-            sql = "UPDATE livros SET titulo = %s, isbn = %s, autor = %s, genero = %s, descricao = %s WHERE id_livro = %s"
-            cursor.execute(sql, (titulo, isbn, autor, genero, descricao, id_livro))
+            # sql = "UPDATE livros SET titulo = %s, isbn = %s, autor = %s, genero = %s, descricao = %s WHERE id_livro = %s"
+            # cursor.execute(sql, (titulo, isbn, autor, genero, descricao, id_livro))
+            pass
         else:
             # Verifica se o livro já existe antes de inserir
-            cursor.execute('SELECT COUNT(*) FROM livros WHERE isbn = %s', (isbn,))
-            if cursor.fetchone()[0] == 0:
-                sql = "INSERT INTO livros (titulo, isbn, autor, genero, descricao) VALUES (%s, %s, %s, %s, %s)"
-                cursor.execute(sql, (titulo, isbn, autor, genero, descricao))
-            else:
-                return redirect("/livros")  # Evita duplicação
+            # cursor.execute('SELECT COUNT(*) FROM livros WHERE isbn = %s', (isbn,))
+            # if cursor.fetchone()[0] == 0:
+            #     sql = "INSERT INTO livros (titulo, isbn, autor, genero, descricao) VALUES (%s, %s, %s, %s, %s)"
+            #     cursor.execute(sql, (titulo, isbn, autor, genero, descricao))
+            # else:
+            #     return redirect("/livros")  # Evita duplicação
 
-        db.commit()
+            pass
 
-    cursor = db.cursor()
-    sql = "SELECT * FROM livros"
-    cursor.execute(sql)
-    results = cursor.fetchall()
-    return render_template("livros.html", livros=results)
+        # db.commit()
 
+    # cursor = db.cursor()
+    # sql = "SELECT * FROM livros"
+    # cursor.execute(sql)
+    # results = cursor.fetchall()
+    results = []  # Temporário, substitua pelo código real ao reativar o banco de dados
+    return render_template("livros.html", livros=results, show_navbar=True)
 
 @app.route("/deletar_livro", methods=['GET'])
 def deletar_livro():
@@ -98,10 +108,10 @@ def deletar_livro():
         return redirect("/")
     
     id_livro = request.args.get('id_livro')
-    cursor = db.cursor()
-    sql = "DELETE FROM livros WHERE id_livro = %s"
-    cursor.execute(sql, (id_livro,))
-    db.commit()
+    # cursor = db.cursor()
+    # sql = "DELETE FROM livros WHERE id_livro = %s"
+    # cursor.execute(sql, (id_livro,))
+    # db.commit()
     return redirect("/livros")
 
 if __name__ == "__main__":

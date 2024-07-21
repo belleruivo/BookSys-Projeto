@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Livros</title>
-        <link rel="stylesheet" href="../static/CSS/style_livros.css">  
-        </style>
-    </head>
+{% extends "layout.html" %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_livros.css') }}">
+{% endblock %}
+
+{% block title %}Livros{% endblock %}
+
+{% block content %}
     <body>
         <h1>Livros</h1>
         <p>Aqui você visualizar informações, editar, cadastrar e deletar seus livros.</p>
@@ -112,4 +112,4 @@
         
         <script src="../static/JS/script_livros.js"></script>
     </body>
-</html>
+{% endblock %}
