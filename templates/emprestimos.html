@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>BookSys | Empréstimos</title>
+        <link rel="stylesheet" href="../static/CSS/style_emprestimos.css">
+    </head>
+    <body>
+        <h1>Empréstimos</h1>
+        <p>Aqui você pode visualizar informações, editar, registrar e confirmar a devolução dos empréstimos.</p>
+        
+        <button class="btn-cadastro" onclick="openCadastroModal()">Registrar Novo Empréstimo</button>
+        
+        <div id="cadastroModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeCadastroModal()">&times;</span>
+                <h1>Registro de Empréstimo</h1>
+                <form id="cadastroForm" action="/emprestimos" method="post">
+                    <label for="nome_usuario">Nome do Usuário:</label>
+                    <input type="text" id="nome_usuario" name="nome_usuario" required><br><br>
+                    
+                    <label for="id_livro">Livro:</label>
+                    <select id="id_livro" name="id_livro" required>
+                        {% for livro in livros %}
+                        <option value="{{ livro[0] }}">{{ livro[1] }}</option>
+                        {% endfor %}
+                    </select><br><br>
+                    
+                    <label for="data_emprestimo">Data do Empréstimo:</label>
+                    <input type="date" id="data_emprestimo" name="data_emprestimo" required><br><br>
+                    
+                    <label for="data_devolucao">Data de Devolução:</label>
+                    <input type="date" id="data_devolucao" name="data_devolucao" required><br><br>
+                    
+                    <button class="btn-enviar" type="submit">Registrar</button>
+                </form>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome do Usuário</th>
+                    <th>Livro</th>
+                    <th>Data do Empréstimo</th>
+                    <th>Data de Devolução</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emprestimo in emprestimos %}
+                <tr>
+                    <td>{{ emprestimo[1] }}</td>
+                    <td>{{ emprestimo[2] }}</td>
+                    <td>{{ emprestimo[3] }}</td>
+                    <td>{{ emprestimo[4] }}</td>
+                    <td>
+                        <button onclick="openEditarModal('{{ emprestimo[0] }}', '{{ emprestimo[1] }}', '{{ emprestimo[2] }}', '{{ emprestimo[3] }}', '{{ emprestimo[4] }}')">Editar</button>
+                        <a href="/confirmar_devolucao?id_emprestimo={{ emprestimo[0] }}" onclick="return confirm('Tem certeza que deseja confirmar a devolução deste empréstimo?')">Confirmar Devolução</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div id="editarModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditarModal()">&times;</span>
+                <h1>Editar Empréstimo</h1>
+                <form id="editarForm" action="/editar_emprestimo" method="post">
+                    <input type="hidden" id="edit_id_emprestimo" name="id_emprestimo">
+                    
+                    <label for="edit_nome_usuario">Nome do Usuário:</label>
+                    <input type="text" id="edit_nome_usuario" name="nome_usuario" required><br><br>
+                    
+                    <label for="edit_id_livro">Livro:</label>
+                    <select id="edit_id_livro" name="id_livro" required>
+                        {% for livro in livros %}
+                        <option value="{{ livro[0] }}">{{ livro[1] }}</option>
+                        {% endfor %}
+                    </select><br><br>
+                    
+                    <label for="edit_data_emprestimo">Data do Empréstimo:</label>
+                    <input type="date" id="edit_data_emprestimo" name="data_emprestimo" required><br><br>
+                    
+                    <label for="edit_data_devolucao">Data de Devolução:</label>
+                    <input type="date" id="edit_data_devolucao" name="data_devolucao" required><br><br>
+                    
+                    <button class="btn-enviar" type="submit">Salvar</button>
+                </form>
+            </div>
+        </div>
+
+        <a href="/home">Voltar para a home</a>
+        <a href="/livros">Voltar para Livros</a>
+        
+        <script src="../static/JS/script_emprestimos.js"></script>
+
+    </body>
+</html>
