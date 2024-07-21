@@ -7,6 +7,8 @@ app.secret_key = 'eqwivcerldasdkjkgtirrewruywu'
 # db = pymysql.connect(host="localhost", user="root", password="", database="projetoflask")
 
 usuarios = [{'id': 1, 'email': 'usuario@example.com', 'senha': 'senha123', 'nome': 'Usuário Exemplo'}]
+livros = [{'id_livro': 1, 'titulo': 'Livro Exemplo', 'isbn': '1234567890', 'autor': 'Autor Exemplo', 'genero': 'Gênero Exemplo', 'descricao': 'Descrição do livro', 'disponivel': 1}]
+emprestimos = []
 
 @app.route("/", methods=['GET', 'POST'])
 def login():
@@ -64,7 +66,7 @@ def home():
     return render_template("home.html", show_navbar=True)
 
 @app.route("/livros", methods=['GET', 'POST'])
-def livros():
+def livros_view():
     if 'id' not in session:
         return redirect("/")
     
@@ -81,13 +83,18 @@ def livros():
             # Atualiza o livro existente
             # sql = "UPDATE livros SET titulo = %s, isbn = %s, autor = %s, genero = %s, descricao = %s WHERE id_livro = %s"
             # cursor.execute(sql, (titulo, isbn, autor, genero, descricao, id_livro))
-            pass
+            livro = next((l for l in livros if l['id_livro'] == int(id_livro)), None)
+            if livro:
+                livro['titulo'] = titulo
+                livro['isbn'] = isbn
+                livro['autor'] = autor
+                livro['genero'] = genero
+                livro['descricao'] = descricao
         else:
             # Verifica se o livro já existe antes de inserir
-            cursor.execute('SELECT COUNT(*) FROM livros WHERE isbn = %s', (isbn,))
-            if cursor.fetchone()[0] == 0:
-                sql = "INSERT INTO livros (titulo, isbn, autor, genero, descricao, disponivel) VALUES (%s, %s, %s, %s, %s, 1)"
-                cursor.execute(sql, (titulo, isbn, autor, genero, descricao))
+            if not any(l['isbn'] == isbn for l in livros):
+                novo_livro = {'id_livro': len(livros) + 1, 'titulo': titulo, 'isbn': isbn, 'autor': autor, 'genero': genero, 'descricao': descricao, 'disponivel': 1}
+                livros.append(novo_livro)
             else:
                 return redirect("/livros")  # Evita duplicação
 
@@ -99,6 +106,7 @@ def livros():
     # sql = "SELECT * FROM livros WHERE disponivel = 1"
     # cursor.execute(sql)
     # results = cursor.fetchall()
+    results = [l for l in livros if l['disponivel'] == 1]
     return render_template("livros.html", livros=results)
 
 @app.route("/deletar_livro", methods=['GET'])
@@ -111,10 +119,13 @@ def deletar_livro():
     # sql = "DELETE FROM livros WHERE id_livro = %s"
     # cursor.execute(sql, (id_livro,))
     # db.commit()
+    livro = next((l for l in livros if l['id_livro'] == int(id_livro)), None)
+    if livro:
+        livros.remove(livro)
     return redirect("/livros")
 
 @app.route("/emprestimos", methods=['GET', 'POST'])
-def emprestimos():
+def emprestimos_view():
     if 'id' not in session:
         return redirect("/")
     
@@ -125,32 +136,39 @@ def emprestimos():
         data_devolucao = request.form.get('data_devolucao')
 
         if nome_usuario and id_livro and data_emprestimo and data_devolucao:
-            cursor = db.cursor()
+            # cursor = db.cursor()
             
             # Adiciona um novo empréstimo
-            sql = """INSERT INTO emprestimos (nome_usuario, id_livro, data_emprestimo, data_devolucao)
-                     VALUES (%s, %s, %s, %s)"""
-            cursor.execute(sql, (nome_usuario, id_livro, data_emprestimo, data_devolucao))
-            db.commit()
+            # sql = """INSERT INTO emprestimos (nome_usuario, id_livro, data_emprestimo, data_devolucao)
+            #          VALUES (%s, %s, %s, %s)"""
+            # cursor.execute(sql, (nome_usuario, id_livro, data_emprestimo, data_devolucao))
+            # db.commit()
+            novo_emprestimo = {'id_emprestimo': len(emprestimos) + 1, 'nome_usuario': nome_usuario, 'id_livro': int(id_livro), 'data_emprestimo': data_emprestimo, 'data_devolucao': data_devolucao}
+            emprestimos.append(novo_emprestimo)
             
             # Atualiza a disponibilidade do livro
-            cursor.execute("UPDATE livros SET disponivel = 0 WHERE id_livro = %s", (id_livro,))
-            db.commit()
+            # cursor.execute("UPDATE livros SET disponivel = 0 WHERE id_livro = %s", (id_livro,))
+            # db.commit()
+            livro = next((l for l in livros if l['id_livro'] == int(id_livro)), None)
+            if livro:
+                livro['disponivel'] = 0
         else:
             return "Todos os campos são obrigatórios!"
 
-    cursor = db.cursor()
+    # cursor = db.cursor()
     # Consulta modificada para incluir o nome do livro
-    sql = """SELECT emprestimos.id_emprestimo, emprestimos.nome_usuario, livros.titulo, emprestimos.data_emprestimo, emprestimos.data_devolucao
-             FROM emprestimos
-             JOIN livros ON emprestimos.id_livro = livros.id_livro"""
-    cursor.execute(sql)
-    emprestimos = cursor.fetchall()
+    # sql = """SELECT emprestimos.id_emprestimo, emprestimos.nome_usuario, livros.titulo, emprestimos.data_emprestimo, emprestimos.data_devolucao
+    #          FROM emprestimos
+    #          JOIN livros ON emprestimos.id_livro = livros.id_livro"""
+    # cursor.execute(sql)
+    # emprestimos = cursor.fetchall()
+    emprestimos_view = [{'id_emprestimo': e['id_emprestimo'], 'nome_usuario': e['nome_usuario'], 'titulo': next((l['titulo'] for l in livros if l['id_livro'] == e['id_livro']), ''), 'data_emprestimo': e['data_emprestimo'], 'data_devolucao': e['data_devolucao']} for e in emprestimos]
 
-    cursor.execute("SELECT * FROM livros WHERE disponivel = 1")
-    livros_disponiveis = cursor.fetchall()
+    # cursor.execute("SELECT * FROM livros WHERE disponivel = 1")
+    # livros_disponiveis = cursor.fetchall()
+    livros_disponiveis = [l for l in livros if l['disponivel'] == 1]
 
-    return render_template("emprestimos.html", emprestimos=emprestimos, livros=livros_disponiveis)
+    return render_template("emprestimos.html", emprestimos=emprestimos_view, livros=livros_disponiveis)
 
 @app.route("/editar_emprestimo", methods=['POST'])
 def editar_emprestimo():
@@ -163,12 +181,18 @@ def editar_emprestimo():
     data_emprestimo = request.form.get('data_emprestimo')
     data_devolucao = request.form.get('data_devolucao')
     
-    cursor = db.cursor()
-    sql = """UPDATE emprestimos
-             SET nome_usuario = %s, id_livro = %s, data_emprestimo = %s, data_devolucao = %s
-             WHERE id_emprestimo = %s"""
-    cursor.execute(sql, (nome_usuario, id_livro, data_emprestimo, data_devolucao, id_emprestimo))
-    db.commit()
+    # cursor = db.cursor()
+    # sql = """UPDATE emprestimos
+    #          SET nome_usuario = %s, id_livro = %s, data_emprestimo = %s, data_devolucao = %s
+    #          WHERE id_emprestimo = %s"""
+    # cursor.execute(sql, (nome_usuario, id_livro, data_emprestimo, data_devolucao, id_emprestimo))
+    # db.commit()
+    emprestimo = next((e for e in emprestimos if e['id_emprestimo'] == int(id_emprestimo)), None)
+    if emprestimo:
+        emprestimo['nome_usuario'] = nome_usuario
+        emprestimo['id_livro'] = int(id_livro)
+        emprestimo['data_emprestimo'] = data_emprestimo
+        emprestimo['data_devolucao'] = data_devolucao
     
     return redirect("/emprestimos")
 
@@ -179,17 +203,24 @@ def confirmar_devolucao():
     
     id_emprestimo = request.args.get('id_emprestimo')
     
-    cursor = db.cursor()
-    cursor.execute("SELECT id_livro FROM emprestimos WHERE id_emprestimo = %s", (id_emprestimo,))
-    id_livro = cursor.fetchone()[0]
+    # cursor = db.cursor()
+    # cursor.execute("SELECT id_livro FROM emprestimos WHERE id_emprestimo = %s", (id_emprestimo,))
+    # id_livro = cursor.fetchone()[0]
+    emprestimo = next((e for e in emprestimos if e['id_emprestimo'] == int(id_emprestimo)), None)
+    if emprestimo:
+        id_livro = emprestimo['id_livro']
     
-    # Remove o empréstimo
-    cursor.execute("DELETE FROM emprestimos WHERE id_emprestimo = %s", (id_emprestimo,))
-    db.commit()
+        # Remove o empréstimo
+        # cursor.execute("DELETE FROM emprestimos WHERE id_emprestimo = %s", (id_emprestimo,))
+        # db.commit()
+        emprestimos.remove(emprestimo)
     
-    # Atualiza a disponibilidade do livro
-    cursor.execute("UPDATE livros SET disponivel = 1 WHERE id_livro = %s", (id_livro,))
-    db.commit()
+        # Atualiza a disponibilidade do livro
+        # cursor.execute("UPDATE livros SET disponivel = 1 WHERE id_livro = %s", (id_livro,))
+        # db.commit()
+        livro = next((l for l in livros if l['id_livro'] == id_livro), None)
+        if livro:
+            livro['disponivel'] = 1
     
     return redirect("/emprestimos")
 
