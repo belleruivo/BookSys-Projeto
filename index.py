@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, session
+import datetime
 import pymysql
 
 app = Flask(__name__)
@@ -125,12 +126,24 @@ def emprestimos():
             # Atualiza a disponibilidade do livro
             cursor.execute("UPDATE livros SET disponivel = 0 WHERE id_livro = %s", (id_livro,))
             db.commit()
+            
+            # Verifica se o livro está atrasado e move para a tabela de atrasos se necessário
+            data_atual = datetime.date.today()
+            data_devolucao_date = datetime.datetime.strptime(data_devolucao, "%Y-%m-%d").date()
+            
+            if data_atual > data_devolucao_date:
+                sql_atrasos = """INSERT INTO atrasos (id_emprestimo, nome_usuario, nome_livro, 
+                                                     data_emprestimo, data_devolucao)
+                                 VALUES ((SELECT LAST_INSERT_ID()), %s, (SELECT titulo FROM livros WHERE id_livro = %s), %s, %s)"""
+                cursor.execute(sql_atrasos, (nome_usuario, id_livro, data_emprestimo, data_devolucao))
+                db.commit()
+
         else:
             return "Todos os campos são obrigatórios!"
 
     cursor = db.cursor()
-    # Consulta modificada para incluir o nome do livro
-    sql = """SELECT emprestimos.id_emprestimo, emprestimos.nome_usuario, livros.titulo, emprestimos.data_emprestimo, emprestimos.data_devolucao
+    sql = """SELECT emprestimos.id_emprestimo, emprestimos.nome_usuario, livros.titulo, 
+                    emprestimos.data_emprestimo, emprestimos.data_devolucao
              FROM emprestimos
              JOIN livros ON emprestimos.id_livro = livros.id_livro"""
     cursor.execute(sql)
@@ -181,6 +194,49 @@ def confirmar_devolucao():
     db.commit()
     
     return redirect("/emprestimos")
+
+@app.route("/atrasos")
+def atrasos():
+    if 'id' not in session:
+        return redirect("/")
+
+    cursor = db.cursor()
+    sql = """SELECT atrasos.id, atrasos.id_emprestimo, atrasos.nome_usuario, atrasos.nome_livro, 
+                    atrasos.data_emprestimo, atrasos.data_devolucao
+             FROM atrasos
+             JOIN emprestimos ON atrasos.id_emprestimo = emprestimos.id_emprestimo"""
+    cursor.execute(sql)
+    atrasos = cursor.fetchall()
+    
+    return render_template("atrasos.html", atrasos=atrasos)
+
+@app.route("/confirmar_devolucao_atraso", methods=['GET'])
+def confirmar_devolucao_atraso():
+    if 'id' not in session:
+        return redirect("/")
+
+    id_emprestimo = request.args.get('id_emprestimo')
+    
+    cursor = db.cursor()
+    
+    # Remove o livro da tabela de atrasos
+    cursor.execute("DELETE FROM atrasos WHERE id_emprestimo = %s", (id_emprestimo,))
+    db.commit()
+    
+    # Adiciona o livro de volta à tabela de livros
+    cursor.execute("SELECT nome_livro FROM emprestimos WHERE id_emprestimo = %s", (id_emprestimo,))
+    livro = cursor.fetchone()
+
+    if livro:
+        cursor.execute("INSERT INTO livros (titulo, disponivel) VALUES (%s, 1)", (livro[0],))
+        db.commit()
+    
+    # Remove o empréstimo da tabela de emprestimos
+    cursor.execute("DELETE FROM emprestimos WHERE id_emprestimo = %s", (id_emprestimo,))
+    db.commit()
+    
+    return redirect("/atrasos")
+
 
 if __name__ == "__main__":
     app.run(debug=True)

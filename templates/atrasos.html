@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookSys | Atrasos</title>
+    <link rel="stylesheet" href="../static/CSS/style_atrasos.css">
+</head>
+<body>
+    <h1>Atrasos</h1>
+    <p>Aqui você pode visualizar os atrasos pendentes dos livros da sua biblioteca.</p>
+    
+    <a href="/home">Voltar para a home</a>
+    <a href="/livros">Voltar para Livros</a>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>ID Empréstimo</th>
+                <th>Nome do Usuário</th>
+                <th>Nome do Livro</th>
+                <th>Data do Empréstimo</th>
+                <th>Data de Devolução</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for atraso in atrasos %}
+                <tr>
+                    <td>{{ atraso.id_emprestimo }}</td>
+                    <td>{{ atraso.nome_usuario }}</td>
+                    <td>{{ atraso.nome_livro }}</td>
+                    <td>{{ atraso.data_emprestimo }}</td>
+                    <td>{{ atraso.data_devolucao }}</td>
+                    <td>
+                        <a href="/confirmar_devolucao_atraso?id_emprestimo={{ atraso.id_emprestimo }}">Confirmar Devolução</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script src="../static/JS/script_atrasos.js"></script>
+</body>
+</html>
