@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_atrasos.css') }}">
+{% endblock %}
+
+{% block title %}BookSys | Atrasos{% endblock %}
+
+{% block content %}
+<main>
+    <div class="header-container">
+        <h1>Atrasos</h1>
+        <p>Aqui você pode visualizar os atrasos pendentes dos livros da sua biblioteca.</p>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Empréstimo</th>
+                    <th>Nome do Usuário</th>
+                    <th>Nome do Livro</th>
+                    <th>Data do Empréstimo</th>
+                    <th>Data de Devolução</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for atraso in atrasos %}
+                    <tr>
+                        <td>{{ atraso.id_emprestimo }}</td>
+                        <td>{{ atraso.nome_usuario }}</td>
+                        <td>{{ atraso.nome_livro }}</td>
+                        <td>{{ atraso.data_emprestimo }}</td>
+                        <td>{{ atraso.data_devolucao }}</td>
+                        <td>
+                            <a href="{{ url_for('confirmar_devolucao_atraso', id_emprestimo=atraso.id_emprestimo) }}" class="btn-action" onclick="return confirm('Tem certeza que deseja confirmar a devolução deste atraso?')">Confirmar Devolução</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock %}

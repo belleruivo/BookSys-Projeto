@@ -1,0 +1,50 @@
+/* Estilo base para links e botões */
+.btn-link {
+    background-color: #005EFF;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.btn-link:hover {
+    background-color: #004bb5;
+}
+
+.btn-action {
+    background-color: #005EFF;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.btn-action:hover {
+    background-color: #004bb5;
+}
+
+/* Container da tabela */
+.table-container {
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+thead {
+    background-color: #f4f4f4;
+}
+
+thead th {
+    font-weight: bold;
+}

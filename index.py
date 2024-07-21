@@ -224,5 +224,45 @@ def confirmar_devolucao():
     
     return redirect("/emprestimos")
 
+@app.route("/atrasos")
+def atrasos():
+    if 'id' not in session:
+        return redirect("/")
+
+    # Simula a consulta de atrasos
+    atrasos_exibidos = [
+        {
+            'id': emp['id_emprestimo'],
+            'nome_usuario': emp['nome_usuario'],
+            'titulo': next(livro['titulo'] for livro in livros_mockados if livro['id'] == emp['id_livro']),
+            'data_emprestimo': emp['data_emprestimo'],
+            'data_devolucao': emp['data_devolucao']
+        }
+        for emp in emprestimos_mockados
+        if emp['data_devolucao'] < '2024-07-21'  # Adicione lógica de atraso conforme necessário
+    ]
+    
+    return render_template("atrasos.html", atrasos=atrasos_exibidos, show_navbar=True)
+
+@app.route("/confirmar_devolucao_atraso", methods=['GET'])
+def confirmar_devolucao_atraso():
+    if 'id' not in session:
+        return redirect("/")
+
+    id_emprestimo = request.args.get('id_emprestimo')
+    id_emprestimo = int(id_emprestimo)
+    
+    # Remove o atraso da lista
+    global emprestimos_mockados
+    emprestimos_mockados = [emp for emp in emprestimos_mockados if emp['id_emprestimo'] != id_emprestimo]
+    
+    # Atualiza a disponibilidade do livro
+    for livro in livros_mockados:
+        if livro['id'] == id_emprestimo:
+            livro['disponivel'] = True
+            break
+    
+    return redirect("/atrasos")
+
 if __name__ == "__main__":
     app.run(debug=True)

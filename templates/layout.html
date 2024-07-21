@@ -21,6 +21,7 @@
                 <li class="navbar-item"><a href="{{ url_for('home') }}" class="navbar-link">Home</a></li>
                 <li class="navbar-item"><a href="{{ url_for('livros') }}" class="navbar-link">Livros</a></li>
                 <li class="navbar-item"><a href="{{ url_for('emprestimos') }}" class="navbar-link">Emprestimos</a></li>
+                <li class="navbar-item"><a href="{{ url_for('atrasos') }}" class="navbar-link">Atrasos</a></li>
                 <!-- <li class="navbar-item"><a href="{{ url_for('emprestimos') }}" class="navbar-link">Emprestimos</a></li> -->
                 {% if 'id' in session %}
                     <li class="navbar-item"><a href="{{ url_for('logout') }}" class="navbar-link">Logout</a></li>
