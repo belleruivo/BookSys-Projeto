@@ -190,7 +190,19 @@ def emprestimos():
             'titulo': row[5]
         })
 
+    # Adicionando a consulta para obter livros disponíveis
+    cursor.execute("SELECT id_livro, titulo FROM livros WHERE disponivel = 1")
+    livros_results = cursor.fetchall()
+
+    livros = []
+    for row in livros_results:
+        livros.append({
+            'id': row[0],
+            'titulo': row[1]
+        })
+
     return render_template("emprestimos.html", emprestimos=emprestimos, livros=livros, show_navbar=True, show_footer=True)
+
 
 @app.route("/devolucao", methods=['GET'])
 def devolucao():

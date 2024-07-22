@@ -24,11 +24,12 @@
     <div class="card-container">
         {% for emprestimo in emprestimos %}
         <div class="card">
-            <p><strong>Livro:</strong> {{ emprestimo['titulo'] }}</p>
-            <div class="card-button">
-                <button onclick="openEditarModal('{{ emprestimo['id_emprestimo'] }}', '{{ emprestimo['nome_usuario'] }}', '{{ emprestimo['id_livro'] }}', '{{ emprestimo['data_emprestimo'] }}', '{{ emprestimo['data_devolucao'] }}')">Editar</button>
-                <br>
-                <a href="/confirmar_devolucao?id_emprestimo={{ emprestimo['id_emprestimo'] }}" onclick="return confirm('Tem certeza que deseja confirmar a devolução deste empréstimo?')">Confirmar Devolução</a>
+            <div class="card-header">
+                <h2 style="text-align: left;"><strong>Livro:</strong> {{ emprestimo['titulo'] }}</h2>
+                <div class="card-button">
+                    <button style="border: none;" onclick="openEditarModal('{{ emprestimo['id_emprestimo'] }}', '{{ emprestimo['nome_usuario'] }}', '{{ emprestimo['id_livro'] }}', '{{ emprestimo['data_emprestimo'] }}', '{{ emprestimo['data_devolucao'] }}')">Editar</button>
+                    <a href="/confirmar_devolucao?id_emprestimo={{ emprestimo['id_emprestimo'] }}" onclick="return confirm('Tem certeza que deseja confirmar a devolução deste empréstimo?')">Confirmar Devolução</a>
+                </div>
             </div>
         </div>
         {% endfor %}
