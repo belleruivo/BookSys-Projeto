@@ -1,8 +1,9 @@
 {% extends "layout.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}BookSys | Home{% endblock %}
 
 {% block styles %}
+<link rel="icon" href="../static/img/logo.png" type="image/png">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 {% endblock %}
 
@@ -11,10 +12,9 @@
     <img src="{{ url_for('static', filename='img/home-image.jpg') }}" alt="Descrição da imagem" class="home-image">
     <!-- <h1>Bem-vindo(a) ao BookSys</h1> -->
     <div class="intro-text">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet dolor libero, eget venenatis mauris finibus dictum. Vestibulum quis elit quis purus varius mollis. Curabitur ultricies diam libero, eget fringilla felis dapibus at.</p>
-        <p>Praesent nec nunc nec justo volutpat tincidunt. Suspendisse potenti. Nulla facilisi. Cras eu est ac libero aliquam tincidunt. Maecenas non nisi sit amet ipsum pellentesque ultricies. Integer vel turpis a urna vehicula cursus a nec libero.</p>
-        <p>Mauris eu dui at ante tincidunt luctus. Duis ultrices turpis ac ex blandit, vel luctus erat dignissim. Phasellus et nulla ac risus suscipit convallis. Curabitur nec velit sit amet risus suscipit feugiat. Aliquam erat volutpat.</p>
-        <p>Quisque sollicitudin, nisl at hendrerit tincidunt, metus erat malesuada nunc, non porttitor nulla ante nec mauris. Proin vehicula, sapien ut tincidunt venenatis, risus lacus blandit dui, eu viverra nisi leo non lectus.</p>
+        <p>Tenha controle total sobre os empréstimos de livros da sua biblioteca. Registre, acompanhe e gerencie facilmente cada empréstimo.</p>
+        <p>Mantenha seu acervo sempre organizado. Cadastre novos livros e edite informações de uma forma fácil.</p>
+        <p>Fique de olho nos empréstimos atrasados. Receba alertas internos e garanta a devolução pontual dos livros.</p>
     </div>
     <div class="card-container">
         <div class="card">
