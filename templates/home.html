@@ -8,7 +8,7 @@
 
 {% block content %}
 <div class="home-container">
-    <img src="{{ url_for('static', filename='images/home-image.jpg') }}" alt="Descrição da imagem" class="home-image">
+    <img src="{{ url_for('static', filename='images/home-image.webp') }}" alt="Descrição da imagem" class="home-image">
     <h1>Bem-vindo(a) ao BookSys</h1>
     <div class="intro-text">
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet dolor libero, eget venenatis mauris finibus dictum. Vestibulum quis elit quis purus varius mollis. Curabitur ultricies diam libero, eget fringilla felis dapibus at.</p>
@@ -35,3 +35,4 @@
     </div>
 </div>
 {% endblock %}
+{% block show_footer %}true{% endblock %}

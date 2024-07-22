@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}BookSys{% endblock %}</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"> <!-- CSS comum -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome -->
         {% block styles %}
         <!-- Folhas de estilo específicas serão inseridas aqui -->
         {% endblock %}
@@ -22,9 +23,9 @@
                     <li class="navbar-item"><a href="{{ url_for('livros') }}" class="navbar-link">Livros</a></li>
                     <li class="navbar-item"><a href="{{ url_for('emprestimos') }}" class="navbar-link">Emprestimos</a></li>
                     <li class="navbar-item"><a href="{{ url_for('atrasos') }}" class="navbar-link">Atrasos</a></li>
-                    <!-- <li class="navbar-item"><a href="{{ url_for('emprestimos') }}" class="navbar-link">Emprestimos</a></li> -->
                     {% if 'id' in session %}
-                        <li class="navbar-item"><a href="{{ url_for('logout') }}" class="navbar-link">Logout</a></li>
+                        <li class="navbar-item navbar-icon"><a href="{{ url_for('logout') }}" class="navbar-link"><i class="fas fa-sign-out-alt"></i></a></li>
+                        <li class="navbar-item navbar-icon"><a href="#" class="navbar-link"><i class="fas fa-user"></i></a></li>
                     {% else %}
                         <li class="navbar-item"><a href="{{ url_for('login') }}" class="navbar-link">Login</a></li>
                     {% endif %}
@@ -39,9 +40,11 @@
             {% endblock %}
         </main>
 
+        {% if show_footer %}
         <footer class="footer">
             <p> Copyright &copy; 2024 by BookSys. Todos os direitos reservados.</p>
         </footer>
+        {% endif %}
         
     </body>
 </html>

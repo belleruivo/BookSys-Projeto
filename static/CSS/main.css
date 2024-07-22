@@ -9,7 +9,6 @@ body {
     font-family: 'Inter', sans-serif;
     display: flex;
     flex-direction: column; /* Alinha o conteúdo em coluna */
-    font-family: 'Inter', sans-serif;
 }
 
 a {
@@ -68,16 +67,16 @@ a:hover {
 }
 
 main {
-    margin-top: 60px; 
+    /* margin-top: 60px; Ajusta o espaço abaixo da navbar */
     padding: 20px;
     flex: 1; /* Faz com que o main ocupe todo o espaço disponível */
-    padding: 20px;
+    background-color: #D7D7D7; /* Define a cor de fundo do main */
 }
-
 
 .footer {
     background-color: #f1f1f1; /* Cinza claro */
     padding: 10px 20px;
     text-align: center;
     color: #333;
+    border-top: 1px solid #ddd; /* Adiciona uma borda superior se necessário */
 }

@@ -65,7 +65,7 @@
     position: relative; /* Mantém o botão de cadastro posicionado em relação a este contêiner */
     margin-bottom: 20px;
     margin-left: 20px;
-    
+    margin-top: 60px;
     text-align: left;
 }
 
