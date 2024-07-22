@@ -14,12 +14,12 @@
             <h1>Empréstimos</h1>
             <p>Aqui você pode visualizar informações, editar, registrar e confirmar a devolução dos empréstimos.</p>
             <form action="/emprestimos" method="get" class="search-form">
-                <input class="form-control" type="text" name="search" placeholder="Buscar por empréstimo">
+                <input class="form-control" type="text" name="search" placeholder="Buscar por livro emprestado">
                 <input class="btn-search" type="submit" value="Buscar">
             </form>
         </div>
     </div>
-
+    
     <div class="card-container">
         {% for emprestimo in emprestimos %}
         <div class="card">
@@ -35,7 +35,7 @@
         </div>
         {% endfor %}
     </div>
-
+    
     <!-- Modal para registro de empréstimo -->
     <div id="cadastroModal" class="modal">
         <div class="modal-content">
