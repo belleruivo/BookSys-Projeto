@@ -1,27 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
-</head>
-    <body>
-        <h1>Cadastre-se</h1>
-        <form action="/cadastro" method="post">
-            <label for="nome">Nome completo:</label>
-            <input type="text" id="nome" name="nome" placeholder="Ex.: Murilo Dantas" required><br><br>
-            
-            <label for="email">E-mail:</label>
-            <input type="email" id="email" name="email" placeholder="Ex.: murilo.dantas@ifsp.com" required><br><br>
-            
-            <label for="confirm_email">Confirmar Email:</label>
-            <input type="email" id="confirm_email" name="confirm_email" placeholder="Ex.: murilo.dantas@ifsp.com" required><br><br>
-            
-            <label for="senha">Senha:</label>
-            <input type="password" id="senha" name="senha" placeholder="Senha..." required><br><br>
-            
-            <input type="submit" value="Cadastrar">
-        </form>
-        <p>Já tem uma conta? <a href="/">Entre</a></p>
-    </body>
-</html>
+{% extends "layout.html" %}
+
+{% block title %}Cadastro{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro.css') }}">
+<style>
+    .error-message {
+        color: red;
+        font-size: 14px;
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <a href="/home"><img class="logo" src="../static/img/BookSys.png" alt="Logo da BookSys"></a>
+    <div class="cadastro-wrapper">
+        <div class="cadastro-container">
+            <h2>Cadastre-se</h2>
+            <form id="cadastro-form" action="/cadastro" method="post">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Nome completo" id="nome" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" placeholder="E-mail" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" placeholder="Confirmar E-mail" id="confirm_email" name="confirm_email" required>
+                    <span id="email-error" class="error-message">Os emails não correspondem! Verifique e tente novamente.</span>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Senha" id="senha" name="senha" required>
+                    <span id="senha-error" class="error-message">A senha deve ter pelo menos 5 caracteres!</span>
+                </div>
+                <button type="submit" class="btn btn-secondary">Cadastrar</button>
+            </form>
+            <p style="font-weight: bold;">Já tem uma conta? <a href="/">Entre</a></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('cadastro-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Oculta todas as mensagens de erro
+            document.getElementById('email-error').style.display = 'none';
+            document.getElementById('senha-error').style.display = 'none';
+
+            const formData = new FormData(this);
+
+            fetch("/cadastro", {
+                method: "POST",
+                body: formData
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      Swal.fire({
+                          icon: 'success',
+                          title: 'Cadastro feito com sucesso!',
+                          text: 'Redirecionando...',
+                          showConfirmButton: false,
+                          timer: 1500
+                      }).then(() => {
+                          window.location.href = data.redirect_url;
+                      });
+                  } else {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Erro no cadastro',
+                          text: data.message,
+                          showConfirmButton: true
+                      });
+                  }
+              }).catch(error => {
+                  console.error('Error:', error);
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Erro no cadastro',
+                      text: 'Ocorreu um erro inesperado. Por favor, tente novamente.',
+                      showConfirmButton: true
+                  });
+              });
+        });
+    </script>
+{% endblock %}

@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, jsonify
+import datetime
 import pymysql
 
 app = Flask(__name__)
@@ -10,20 +11,31 @@ db = pymysql.connect(host="localhost", user="root", password="", database="proje
 def login():
     if request.method == 'POST':
         email = request.form.get('email')
-        senha = request.form.get('senha')
-        
+        senha = request.form.get('senha').strip()  # Remove espaços em branco
+
         cursor = db.cursor()
-        sql = "SELECT * FROM usuarios WHERE email = %s AND senha = %s"
-        cursor.execute(sql, (email, senha))
+
+        # Verifica o email
+        cursor.execute("SELECT * FROM usuarios WHERE email = %s", (email,))
         usuario = cursor.fetchone()
-        
+
         if usuario:
-            session['id'] = usuario[0]  # Armazena o ID do usuário na sessão
-            return redirect("/home")
+            senha_armazenada = usuario[3].strip()  # Ajuste o índice conforme a posição da senha na sua consulta
+            
+            # Adicione estas linhas para depuração
+            print(f"Senha armazenada: '{senha_armazenada}', Senha fornecida: '{senha}'")
+
+            # Verifica a senha
+            if senha_armazenada == senha:
+                session['id'] = usuario[0]  # Armazena o ID do usuário na sessão
+                return jsonify(success=True, redirect_url="/home")
+            else:
+                return jsonify(success=False, message="senha_incorreta")
         else:
-            return "Credenciais inválidas. Verifique seu email e senha e tente novamente."
-    
+            return jsonify(success=False, message="email_incorreto")
+
     return render_template("login.html")
+
 
 @app.route("/logout")
 def logout():
@@ -36,24 +48,37 @@ def cadastro():
         nome = request.form.get('nome')
         email = request.form.get('email')
         confirm_email = request.form.get('confirm_email')
-        senha = request.form.get('senha')
+        senha = request.form.get('senha').strip()  # Remove espaços em branco
+
+        # Verifica se os e-mails correspondem
+        if email != confirm_email:
+            return jsonify({"success": False, "message": "Os emails não correspondem! Verifique e tente novamente."})
+
+        # Verifica se a senha tem pelo menos 5 caracteres
+        if not senha or len(senha) < 5:
+            return jsonify({"success": False, "message": "A senha deve ter pelo menos 5 caracteres!"})
+
+        cursor = db.cursor()
         
-        if email == confirm_email:
-            cursor = db.cursor()
-            sql = "INSERT INTO usuarios (nome, email, senha) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (nome, email, senha))
-            db.commit()
-            return redirect("/")
-        else:
-            return "Os emails não correspondem!"
-    
+        # Verifica se o e-mail já está registrado
+        cursor.execute("SELECT COUNT(*) FROM usuarios WHERE email = %s", (email,))
+        if cursor.fetchone()[0] > 0:
+            return jsonify({"success": False, "message": "Este e-mail já está registrado. Escolha outro e-mail."})
+        
+        # Se tudo estiver ok, faz o cadastro
+        sql = "INSERT INTO usuarios (nome, email, senha) VALUES (%s, %s, %s)"
+        cursor.execute(sql, (nome, email, senha))
+        db.commit()
+        return jsonify({"success": True, "redirect_url": "/"})
+
     return render_template("cadastro.html")
+
 
 @app.route("/home")
 def home():
     if 'id' not in session:
         return redirect("/")
-    return render_template("home.html")
+    return render_template("home.html", show_navbar=True)
 
 @app.route("/livros", methods=['GET', 'POST'])
 def livros():
@@ -88,7 +113,7 @@ def livros():
     sql = "SELECT * FROM livros WHERE disponivel = 1"
     cursor.execute(sql)
     results = cursor.fetchall()
-    return render_template("livros.html", livros=results)
+    return render_template("livros.html", livros=results, show_navbar=True)
 
 @app.route("/deletar_livro", methods=['GET'])
 def deletar_livro():
@@ -125,12 +150,25 @@ def emprestimos():
             # Atualiza a disponibilidade do livro
             cursor.execute("UPDATE livros SET disponivel = 0 WHERE id_livro = %s", (id_livro,))
             db.commit()
+            
+            # Verifica se o livro está atrasado e move para a tabela de atrasos se necessário
+            data_atual = datetime.date.today()
+            if data_atual > datetime.datetime.strptime(data_devolucao, "%Y-%m-%d").date():
+                sql_atrasos = """INSERT INTO atrasos (id_emprestimo, nome_usuario, nome_livro, 
+                                                     data_emprestimo, data_devolucao)
+                                 VALUES ((SELECT LAST_INSERT_ID()), %s, (SELECT titulo FROM livros WHERE id_livro = %s), %s, %s)"""
+                cursor.execute(sql_atrasos, (nome_usuario, id_livro, data_emprestimo, data_devolucao))
+                db.commit()
+
         else:
             return "Todos os campos são obrigatórios!"
 
+        return redirect("/emprestimos")
+    
     cursor = db.cursor()
     # Consulta modificada para incluir o nome do livro
-    sql = """SELECT emprestimos.id_emprestimo, emprestimos.nome_usuario, livros.titulo, emprestimos.data_emprestimo, emprestimos.data_devolucao
+    sql = """SELECT emprestimos.id_emprestimo, emprestimos.nome_usuario, livros.titulo, 
+                    emprestimos.data_emprestimo, emprestimos.data_devolucao
              FROM emprestimos
              JOIN livros ON emprestimos.id_livro = livros.id_livro"""
     cursor.execute(sql)
@@ -139,7 +177,10 @@ def emprestimos():
     cursor.execute("SELECT * FROM livros WHERE disponivel = 1")
     livros_disponiveis = cursor.fetchall()
 
-    return render_template("emprestimos.html", emprestimos=emprestimos, livros=livros_disponiveis)
+    return render_template("emprestimos.html", emprestimos=emprestimos, livros=livros_disponiveis, show_navbar=True)
+
+
+
 
 @app.route("/editar_emprestimo", methods=['POST'])
 def editar_emprestimo():
@@ -165,12 +206,22 @@ def editar_emprestimo():
 def confirmar_devolucao():
     if 'id' not in session:
         return redirect("/")
-    
+
     id_emprestimo = request.args.get('id_emprestimo')
     
     cursor = db.cursor()
+    
+    # Salva o id_livro antes de remover o empréstimo
     cursor.execute("SELECT id_livro FROM emprestimos WHERE id_emprestimo = %s", (id_emprestimo,))
-    id_livro = cursor.fetchone()[0]
+    result = cursor.fetchone()
+    if result:
+        id_livro = result[0]
+    else:
+        return "Empréstimo não encontrado!"
+    
+    # Remove o registro da tabela de atrasos se existir
+    cursor.execute("DELETE FROM atrasos WHERE id_emprestimo = %s", (id_emprestimo,))
+    db.commit()
     
     # Remove o empréstimo
     cursor.execute("DELETE FROM emprestimos WHERE id_emprestimo = %s", (id_emprestimo,))
@@ -181,6 +232,53 @@ def confirmar_devolucao():
     db.commit()
     
     return redirect("/emprestimos")
+
+
+
+@app.route("/atrasos")
+def atrasos():
+    if 'id' not in session:
+        return redirect("/")
+
+    cursor = db.cursor()
+    sql = """SELECT atrasos.id_atraso, atrasos.id_emprestimo, atrasos.nome_usuario, atrasos.nome_livro, 
+                    atrasos.data_emprestimo, atrasos.data_devolucao
+             FROM atrasos
+             JOIN emprestimos ON atrasos.id_emprestimo = emprestimos.id_emprestimo"""
+    cursor.execute(sql)
+    atrasos = cursor.fetchall()
+    
+    return render_template("atrasos.html", atrasos=atrasos, show_navbar=True)
+
+
+@app.route("/confirmar_devolucao_atraso", methods=['GET'])
+def confirmar_devolucao_atraso():
+    if 'id' not in session:
+        return redirect("/")
+
+    id_emprestimo = request.args.get('id_emprestimo')
+    
+    cursor = db.cursor()
+    
+    # Remove o livro da tabela de atrasos
+    cursor.execute("DELETE FROM atrasos WHERE id_emprestimo = %s", (id_emprestimo,))
+    db.commit()
+    
+    # Adiciona o livro de volta à tabela de livros
+    cursor.execute("SELECT nome_livro FROM emprestimos WHERE id_emprestimo = %s", (id_emprestimo,))
+    livro = cursor.fetchone()
+
+    if livro:
+        cursor.execute("INSERT INTO livros (titulo, disponivel) VALUES (%s, 1)", (livro[0],))
+        db.commit()
+    
+    # Remove o empréstimo da tabela de emprestimos
+    cursor.execute("DELETE FROM emprestimos WHERE id_emprestimo = %s", (id_emprestimo,))
+    db.commit()
+    
+    return redirect("/atrasos")
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
