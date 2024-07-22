@@ -5,9 +5,7 @@ import pymysql
 app = Flask(__name__)
 
 app.secret_key = 'eqwivcerldasdkjkgtirrewruywu'
-# db = pymysql.connect(host="localhost", user="root", password="", database="projetoflask")
-
-usuarios = [{'id': 1, 'email': 'usuario@example.com', 'senha': 'senha123', 'nome': 'Usuário Exemplo'}]
+db = pymysql.connect(host="localhost", user="root", password="", database="projetoflask")
 
 @app.route("/", methods=['GET', 'POST'])
 def login():
@@ -95,12 +93,11 @@ def livros():
         genero = request.form.get('genero')
         descricao = request.form.get('descricao')
         
-        # cursor = db.cursor()
+        cursor = db.cursor()
         if id_livro:
             # Atualiza o livro existente
-            # sql = "UPDATE livros SET titulo = %s, isbn = %s, autor = %s, genero = %s, descricao = %s WHERE id_livro = %s"
-            # cursor.execute(sql, (titulo, isbn, autor, genero, descricao, id_livro))
-            pass
+            sql = "UPDATE livros SET titulo = %s, isbn = %s, autor = %s, genero = %s, descricao = %s WHERE id_livro = %s"
+            cursor.execute(sql, (titulo, isbn, autor, genero, descricao, id_livro))
         else:
             # Verifica se o livro já existe antes de inserir
             cursor.execute('SELECT COUNT(*) FROM livros WHERE isbn = %s', (isbn,))
@@ -110,9 +107,7 @@ def livros():
             else:
                 return redirect("/livros")  # Evita duplicação
 
-            pass
-
-        # db.commit()
+        db.commit()
 
     cursor = db.cursor()
     sql = "SELECT * FROM livros WHERE disponivel = 1"
@@ -126,10 +121,10 @@ def deletar_livro():
         return redirect("/")
     
     id_livro = request.args.get('id_livro')
-    # cursor = db.cursor()
-    # sql = "DELETE FROM livros WHERE id_livro = %s"
-    # cursor.execute(sql, (id_livro,))
-    # db.commit()
+    cursor = db.cursor()
+    sql = "DELETE FROM livros WHERE id_livro = %s"
+    cursor.execute(sql, (id_livro,))
+    db.commit()
     return redirect("/livros")
 
 @app.route("/emprestimos", methods=['GET', 'POST'])
