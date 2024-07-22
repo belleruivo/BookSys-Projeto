@@ -1,6 +1,7 @@
 html, body {
     height: 100%; /* Garante que o body e html ocupem toda a altura da página */
     margin: 0; /* Remove margens padrão */
+    overflow-x: hidden; /* Evita rolagem horizontal */  
 }
 
 body {
@@ -40,6 +41,7 @@ a:hover {
     align-items: center;
     padding: 10px 20px;
     height: 50px;
+    
 }
 
 .navbar-logo {
