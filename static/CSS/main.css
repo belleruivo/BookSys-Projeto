@@ -1,7 +1,7 @@
 html, body {
-    height: 100%; /* Garante que o body e html ocupem toda a altura da página */
-    margin: 0; /* Remove margens padrão */
-    overflow-x: hidden; /* Evita rolagem horizontal */  
+    height: 100%; 
+    margin: 0; 
+    overflow-x: hidden;
 }
 
 body {
@@ -9,7 +9,7 @@ body {
     text-align: center;
     font-family: 'Inter', sans-serif;
     display: flex;
-    flex-direction: column; /* Alinha o conteúdo em coluna */
+    flex-direction: column; 
 }
 
 a {
@@ -69,16 +69,15 @@ a:hover {
 }
 
 main {
-    /* margin-top: 60px; Ajusta o espaço abaixo da navbar */
     padding: 20px;
-    flex: 1; /* Faz com que o main ocupe todo o espaço disponível */
-    background-color: #D7D7D7; /* Define a cor de fundo do main */
+    flex: 1; 
+    background-color: #D7D7D7; 
 }
 
 .footer {
-    background-color: #f1f1f1; /* Cinza claro */
+    background-color: #f1f1f1;
     padding: 10px 20px;
     text-align: center;
     color: #333;
-    border-top: 1px solid #ddd; /* Adiciona uma borda superior se necessário */
+    border-top: 1px solid #ddd; 
 }

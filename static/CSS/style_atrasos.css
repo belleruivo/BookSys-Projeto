@@ -1,5 +1,10 @@
 .header-container{
     margin-top: 60px;
+    color: #fff;
+}
+
+main{
+    background-color: rgb(5, 0, 54);
 }
 
 .btn-link {

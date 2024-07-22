@@ -1,19 +1,21 @@
 .home-container {
     text-align: center;
     padding: 50px 20px;
-    /* margin-top: 60px; */
 }
 
 .home-image {
-    width: 100vw; /* Ocupa toda a largura da viewport */
-    height: auto; /* Mantém a proporção da imagem */
-    border-radius: 0; /* Remove bordas arredondadas */
-    margin: 0; /* Remove margens */
-    display: block; /* Remove o espaço em branco abaixo da imagem */
-    position: relative; /* Ajusta o posicionamento da imagem */
-    left: 50%; /* Move a imagem para a esquerda */
-    transform: translateX(-50%); /* Centraliza a imagem horizontalmente */
+    width: 100vw;
+    height: auto; 
+    border-radius: 0;
+    margin: 0; 
+    position: relative;
+    left: 50%; 
+    transform: translateX(-50%); 
     
+}
+
+main{
+    background-color: rgb(5, 0, 54);
 }
 
 .intro-text {
@@ -22,7 +24,7 @@
     margin-top: 40px;
     font-size: 18px;
     line-height: 1.6;
-    color: #333;
+    color: #fff;
 }
 
 .card-container {

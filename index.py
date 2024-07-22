@@ -158,7 +158,10 @@ def emprestimos():
             sql = """INSERT INTO emprestimos (nome_usuario, id_livro, data_emprestimo, data_devolucao)
                      VALUES (%s, %s, %s, %s)"""
             cursor.execute(sql, (nome_usuario, id_livro, data_emprestimo, data_devolucao))
-        
+            
+            # Atualiza a disponibilidade do livro
+            cursor.execute("UPDATE livros SET disponivel = 0 WHERE id_livro = %s", (id_livro,))
+
         db.commit()
 
     search = request.args.get('search')
@@ -190,7 +193,6 @@ def emprestimos():
             'titulo': row[5]
         })
 
-    # Adicionando a consulta para obter livros disponíveis
     cursor.execute("SELECT id_livro, titulo FROM livros WHERE disponivel = 1")
     livros_results = cursor.fetchall()
 
@@ -204,29 +206,60 @@ def emprestimos():
     return render_template("emprestimos.html", emprestimos=emprestimos, livros=livros, show_navbar=True, show_footer=True)
 
 
-@app.route("/devolucao", methods=['GET'])
-def devolucao():
+@app.route("/editar_emprestimo", methods=['POST'])
+def editar_emprestimo():
+    if 'id' not in session:
+        return redirect("/")
+    
+    id_emprestimo = request.form.get('id_emprestimo')
+    nome_usuario = request.form.get('nome_usuario')
+    id_livro = request.form.get('id_livro')
+    data_emprestimo = request.form.get('data_emprestimo')
+    data_devolucao = request.form.get('data_devolucao')
+    
+    cursor = db.cursor()
+    sql = """UPDATE emprestimos
+             SET nome_usuario = %s, id_livro = %s, data_emprestimo = %s, data_devolucao = %s
+             WHERE id_emprestimo = %s"""
+    cursor.execute(sql, (nome_usuario, id_livro, data_emprestimo, data_devolucao, id_emprestimo))
+    db.commit()
+    
+    return redirect("/emprestimos")
+
+
+@app.route("/confirmar_devolucao", methods=['GET'])
+def confirmar_devolucao():
     if 'id' not in session:
         return redirect("/")
 
     id_emprestimo = request.args.get('id_emprestimo')
-    id_livro = request.args.get('id_livro')
-
+    
     cursor = db.cursor()
-
-    sql_atrasos = "DELETE FROM atrasos WHERE id_emprestimo = %s"
-    cursor.execute(sql_atrasos, (id_emprestimo,))
+    
+    # Salva o id_livro antes de remover o empréstimo
+    cursor.execute("SELECT id_livro FROM emprestimos WHERE id_emprestimo = %s", (id_emprestimo,))
+    result = cursor.fetchone()
+    if result:
+        id_livro = result[0]
+    else:
+        return "Empréstimo não encontrado!"
+    
+    # Remove o registro da tabela de atrasos se existir
+    cursor.execute("DELETE FROM atrasos WHERE id_emprestimo = %s", (id_emprestimo,))
     db.commit()
-
-    sql_emprestimo = "DELETE FROM emprestimos WHERE id_emprestimo = %s"
-    cursor.execute(sql_emprestimo, (id_emprestimo,))
+    
+    # Remove o empréstimo
+    cursor.execute("DELETE FROM emprestimos WHERE id_emprestimo = %s", (id_emprestimo,))
     db.commit()
-
-    sql_livro = "UPDATE livros SET disponivel = 1 WHERE id_livro = %s"
-    cursor.execute(sql_livro, (id_livro,))
+    
+    # Atualiza a disponibilidade do livro
+    cursor.execute("UPDATE livros SET disponivel = 1 WHERE id_livro = %s", (id_livro,))
     db.commit()
-
+    
     return redirect("/emprestimos")
+
+
+
 
 @app.route("/atrasos", methods=['GET', 'POST'])
 def atrasos():

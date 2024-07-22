@@ -30,7 +30,6 @@
         {% endfor %}
     </div>
     
-    <!-- Modal para cadastro de livro -->
     <div id="cadastroModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeCadastroModal()">&times;</span>
@@ -64,7 +63,6 @@
         </div>
     </div>
 
-    <!-- Modal para editar livro -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeEditModal()">&times;</span>
@@ -86,7 +84,6 @@
                     <option value="Romance">Romance</option>
                     <option value="Mistério">Mistério</option>
                     <option value="Biografia">Biografia</option>
-                    <!-- Adicione mais opções conforme necessário -->
                 </select><br><br>
                 
                 <label for="edit-descricao">Descrição:</label>
@@ -95,7 +92,7 @@
                 <input type="hidden" id="edit-id_livro" name="id_livro">
                 <input type="submit" value="Atualizar">
                 <button type="button" id="deleteButton" style="display:none" onclick="deleteLivro()">Apagar Livro</button>
-            </form>
+            </form> 
         </div>
     </div>
 
