@@ -142,77 +142,56 @@ def emprestimos():
         return redirect("/")
 
     if request.method == 'POST':
+        id_emprestimo = request.form.get('id_emprestimo')
         nome_usuario = request.form.get('nome_usuario')
         id_livro = request.form.get('id_livro')
         data_emprestimo = request.form.get('data_emprestimo')
         data_devolucao = request.form.get('data_devolucao')
 
-        if nome_usuario and id_livro and data_emprestimo and data_devolucao:
-            cursor = db.cursor()
+        cursor = db.cursor()
+        if id_emprestimo:
+            sql = """UPDATE emprestimos 
+                     SET nome_usuario = %s, id_livro = %s, data_emprestimo = %s, data_devolucao = %s 
+                     WHERE id_emprestimo = %s"""
+            cursor.execute(sql, (nome_usuario, id_livro, data_emprestimo, data_devolucao, id_emprestimo))
+        else:
             sql = """INSERT INTO emprestimos (nome_usuario, id_livro, data_emprestimo, data_devolucao)
                      VALUES (%s, %s, %s, %s)"""
             cursor.execute(sql, (nome_usuario, id_livro, data_emprestimo, data_devolucao))
-            db.commit()
+        
+        db.commit()
 
-            cursor.execute("UPDATE livros SET disponivel = 0 WHERE id_livro = %s", (id_livro,))
-            db.commit()
-
-            data_atual = datetime.date.today()
-            if data_atual > datetime.datetime.strptime(data_devolucao, "%Y-%m-%d").date():
-                sql_atrasos = """INSERT INTO atrasos (id_emprestimo, nome_usuario, nome_livro, 
-                                                     data_emprestimo, data_devolucao)
-                                 VALUES ((SELECT LAST_INSERT_ID()), %s, (SELECT titulo FROM livros WHERE id_livro = %s), %s, %s)"""
-                cursor.execute(sql_atrasos, (nome_usuario, id_livro, data_emprestimo, data_devolucao))
-                db.commit()
-
-        else:
-            return "Todos os campos são obrigatórios!"
-
-    search = request.args.get('search')  # Obtém o termo de busca
+    search = request.args.get('search')
 
     cursor = db.cursor()
     if search:
-        sql = """SELECT emprestimos.id_emprestimo, emprestimos.nome_usuario, livros.titulo, 
-                        emprestimos.data_emprestimo, emprestimos.data_devolucao
-                 FROM emprestimos
-                 JOIN livros ON emprestimos.id_livro = livros.id_livro
-                 WHERE (emprestimos.nome_usuario LIKE %s OR livros.titulo LIKE %s)"""
+        sql = """SELECT e.id_emprestimo, e.nome_usuario, e.id_livro, e.data_emprestimo, e.data_devolucao, l.titulo 
+                 FROM emprestimos e 
+                 JOIN livros l ON e.id_livro = l.id_livro 
+                 WHERE l.titulo LIKE %s OR e.nome_usuario LIKE %s"""
         search_term = f"%{search}%"
         cursor.execute(sql, (search_term, search_term))
     else:
-        sql = """SELECT emprestimos.id_emprestimo, emprestimos.nome_usuario, livros.titulo, 
-                        emprestimos.data_emprestimo, emprestimos.data_devolucao
-                 FROM emprestimos
-                 JOIN livros ON emprestimos.id_livro = livros.id_livro"""
+        sql = """SELECT e.id_emprestimo, e.nome_usuario, e.id_livro, e.data_emprestimo, e.data_devolucao, l.titulo 
+                 FROM emprestimos e 
+                 JOIN livros l ON e.id_livro = l.id_livro"""
         cursor.execute(sql)
 
-    emprestimos_result = cursor.fetchall()
-
-    cursor.execute("SELECT * FROM livros WHERE disponivel = 1")
-    livros_disponiveis = cursor.fetchall()
+    results = cursor.fetchall()
 
     emprestimos = []
-    for row in emprestimos_result:
+    for row in results:
         emprestimos.append({
             'id_emprestimo': row[0],
             'nome_usuario': row[1],
-            'titulo': row[2],
-            'data_emprestimo': row[3].strftime('%Y-%m-%d'),  # Converte datetime para string
-            'data_devolucao': row[4].strftime('%Y-%m-%d')   # Converte datetime para string
+            'id_livro': row[2],
+            'data_emprestimo': row[3],
+            'data_devolucao': row[4],
+            'titulo': row[5]
         })
 
-    livros = []
-    for row in livros_disponiveis:
-        livros.append({
-            'id': row[0],
-            'titulo': row[1],
-            'isbn': row[2],
-            'autor': row[3],
-            'genero': row[4],
-            'descricao': row[5]
-        })
+    return render_template("emprestimos.html", emprestimos=emprestimos, show_navbar=True)
 
-    return render_template("emprestimos.html", emprestimos=emprestimos, livros=livros, show_navbar=True)
 
 @app.route("/devolucao", methods=['GET'])
 def devolucao():
