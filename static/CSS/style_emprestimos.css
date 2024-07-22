@@ -65,7 +65,7 @@
     position: relative; /* Mantém o botão de cadastro posicionado em relação a este contêiner */
     margin-bottom: 20px;
     margin-left: 20px;
-    
+    margin-top: 60px;
     text-align: left;
 }
 
@@ -100,7 +100,7 @@ select {
 /* Estilo do container dos cards */
 .card-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column; /* Alinha os cards verticalmente */
     gap: 20px;
     padding: 20px;
 }
@@ -109,26 +109,49 @@ select {
 .card {
     background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 40px;
     padding: 20px;
-    width: 250px;
+    width: 95%; /* Faz com que o card ocupe toda a largura do contêiner */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column; /* Alinha o conteúdo do card verticalmente */
+    
 }
 
-.card h2 {
-    margin-top: 0;
+/* Contêiner para o título e os botões */
+.card-header {
+    display: flex;
+    align-items: center; /* Alinha verticalmente o título e o botão */
+    justify-content: space-between; /* Espaço entre o título e o botão */
+    
 }
 
-.card button {
+/* Estilo para os botões dentro do card */
+.card-button {
+    display: flex; /* Alinha o botão e o link horizontalmente */
+    gap: 10px; /* Espaçamento entre o botão e o link */
+    align-items: center; /* Alinha verticalmente o botão e o link */
+    justify-content: flex-end; /* Alinha o contêiner à direita do card */
+    border: none; /* Garante que a borda do botão de editar esteja ausente */
+    box-shadow: none;/* Remove qualquer sombra indesejada */
+}
+
+.card-button button, .card-button a {
     background-color: #005EFF;
-    border: none;
     color: #fff;
-    padding: 10px 40px;
+    padding: 10px 20px; /* Ajusta o padding para um tamanho mais compacto */
     border-radius: 20px;
     cursor: pointer;
     font-size: 16px;
+    text-decoration: none; /* Remove o sublinhado do link */
 }
 
-.card button:hover {
+.card-button button:hover, .card-button a:hover {
     background-color: #0056b3;
 }
+
+.card h2 {
+    margin: 0; /* Remove a margem padrão do <h2> */
+    flex: 1; /* Faz com que o título ocupe o espaço disponível */
+}   
+

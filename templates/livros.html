@@ -24,10 +24,7 @@
     <div class="card-container">
         {% for livro in livros %}
         <div class="card">
-            <h2>{{ livro['titulo'] }}</h2>
-            <p><strong>Autor:</strong> {{ livro['autor'] }}</p>
-            <p><strong>Gênero:</strong> {{ livro['genero'] }}</p>
-            <p><strong>Descrição:</strong> {{ livro['descricao'] }}</p>
+            <h2 style="text-align: left;">{{ livro['titulo'] }}</h2>
             <button onclick="openEditModal('{{ livro['id'] }}', '{{ livro['titulo'] }}', '{{ livro['isbn'] }}', '{{ livro['autor'] }}', '{{ livro['genero'] }}', '{{ livro['descricao'] }}')">Editar</button>
         </div>
         {% endfor %}

@@ -67,7 +67,7 @@ def cadastro():
 def home():
     if 'id' not in session:
         return redirect("/")
-    return render_template("home.html", show_navbar=True)
+    return render_template("home.html", show_navbar=True, show_footer=True)
 
 @app.route("/livros", methods=['GET', 'POST'])
 def livros():
@@ -122,7 +122,7 @@ def livros():
             'descricao': row[5]
         })
 
-    return render_template("livros.html", livros=livros, show_navbar=True)
+    return render_template("livros.html", livros=livros, show_navbar=True, show_footer=True)
 
 @app.route("/deletar_livro", methods=['GET'])
 def deletar_livro():
@@ -190,8 +190,7 @@ def emprestimos():
             'titulo': row[5]
         })
 
-    return render_template("emprestimos.html", emprestimos=emprestimos, show_navbar=True)
-
+    return render_template("emprestimos.html", emprestimos=emprestimos, livros=livros, show_navbar=True, show_footer=True)
 
 @app.route("/devolucao", methods=['GET'])
 def devolucao():
@@ -237,7 +236,7 @@ def atrasos():
             'data_devolucao': row[4].strftime('%Y-%m-%d')   # Converte datetime para string
         })
 
-    return render_template("atrasos.html", atrasos=atrasos, show_navbar=True)
+    return render_template("atrasos.html", atrasos=atrasos, show_navbar=True, show_footer=True)
 
 if __name__ == "__main__":
     app.run(debug=True)

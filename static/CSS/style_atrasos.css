@@ -1,4 +1,7 @@
-/* Estilo base para links e botÃµes */
+.header-container{
+    margin-top: 60px;
+}
+
 .btn-link {
     background-color: #005EFF;
     color: #fff;

@@ -9,7 +9,7 @@
 
 {% block content %}
 <div class="home-container">
-    <img src="{{ url_for('static', filename='images/home-image.jpg') }}" alt="Descrição da imagem" class="home-image">
+    <img src="{{ url_for('static', filename='images/home-image.webp') }}" alt="Descrição da imagem" class="home-image">
     <h1>Bem-vindo(a) ao BookSys</h1>
     <div class="intro-text">
         <p>Tenha controle total sobre os empréstimos de livros da sua biblioteca. Registre, acompanhe e gerencie facilmente cada empréstimo.</p>
@@ -35,3 +35,4 @@
     </div>
 </div>
 {% endblock %}
+{% block show_footer %}true{% endblock %}
