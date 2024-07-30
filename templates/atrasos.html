@@ -1,17 +1,19 @@
 {% extends "layout.html" %}
 
+{% block title %}BookSys | Atrasos{% endblock %}
+
 {% block styles %}
     <link rel="icon" href="../static/img/logo.png" type="image/png">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style_atrasos.css') }}">
 {% endblock %}
 
-{% block title %}BookSys | Atrasos{% endblock %}
-
 {% block content %}
-<main>
+<body>
     <div class="header-container">
-        <h1>Atrasos</h1>
-        <p>Aqui você pode visualizar os atrasos pendentes dos livros da sua biblioteca.</p>
+        <div class="header-text">
+            <h1>Atrasos</h1>
+            <p>Aqui você pode visualizar os atrasos pendentes dos livros da sua biblioteca.</p>
+        </div>
     </div>
 
     <div class="table-container">
@@ -42,5 +44,5 @@
             </tbody>
         </table>
     </div>
-</main>
+</body>
 {% endblock %}

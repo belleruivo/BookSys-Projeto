@@ -1,10 +1,21 @@
-.header-container{
-    margin-top: 60px;
-    color: #fff;
+main {
+    background-color: rgb(5, 0, 54);
 }
 
-main{
-    background-color: rgb(5, 0, 54);
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; 
+    position: relative;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-top: 60px;
+    text-align: left;
+}
+
+.header-text {
+    max-width: 80%;
+    color: #fff;
 }
 
 .btn-link {
@@ -33,7 +44,6 @@ main{
     background-color: #004bb5;
 }
 
-/* Container da tabela */
 .table-container {
     padding: 20px;
 }

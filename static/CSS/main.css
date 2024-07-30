@@ -41,14 +41,25 @@ a:hover {
     align-items: center;
     padding: 10px 20px;
     height: 50px;
-    
 }
 
 .navbar-logo {
-    color: white;
-    text-decoration: none;
-    font-size: 20px;
-    font-weight: bold;
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.navbar-center {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+}
+
+.navbar-right {
+    margin-right: 25px;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .navbar-menu {
@@ -62,10 +73,25 @@ a:hover {
     margin-left: 20px;
 }
 
+.navbar-item:not(:last-child) {
+    margin-right: 25px; 
+}
+
+.navbar-item.navbar-icon {
+    margin-left: 10px;
+    margin-right: 10px; 
+}
+
 .navbar-link {
-    color: white;
+    color: rgb(255, 255, 255);
     text-decoration: none;
     font-size: 16px;
+}
+
+.navbar-link_logout {
+    color: rgb(0, 60, 255);
+    text-decoration: none;
+    font-size: 21px;
 }
 
 main {
@@ -75,9 +101,8 @@ main {
 }
 
 .footer {
-    background-color: #f1f1f1;
+    background-color: #333;
     padding: 10px 20px;
     text-align: center;
-    color: #333;
-    border-top: 1px solid #ddd; 
+    color: #fff;
 }

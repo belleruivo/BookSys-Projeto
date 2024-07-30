@@ -18,15 +18,6 @@ main{
     background-color: rgb(5, 0, 54);
 }
 
-.intro-text {
-    max-width: 800px;
-    margin: 0 auto 30px;
-    margin-top: 40px;
-    font-size: 18px;
-    line-height: 1.6;
-    color: #fff;
-}
-
 .card-container {
     display: flex;
     justify-content: center;
@@ -45,6 +36,7 @@ main{
 }
 
 .card h2 {
+    color: #ff00dd;
     margin-top: 0;
     font-size: 20px;
 }
@@ -67,4 +59,61 @@ main{
 
 .card button:hover {
     background-color: #0056b3;
+}
+
+.intro-text {
+    max-width: 1000px;
+    margin: 40px auto 30px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #000;
+    text-align: center;
+}
+
+.intro-text h1 {
+    color: #ff00dd; 
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-texts {
+    border-radius: 10px;
+    width: 100%;
+    background-color: #ffffff; 
+    padding: 3px;
+    margin-bottom: 30px; 
+    color: #000; 
+}
+
+.card-texts p.destaque {
+    padding: 20px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #000;
+}
+
+.card-texts p.destaque strong {
+    color: #1a237e; 
+}
+
+.info {
+    text-align: center; 
+    color: #fff; 
+    padding: 20px; 
+    border-radius: 8px; 
+    max-width: 1000px; 
+    margin: 0 auto; 
+}
+
+.info h1 {
+    font-size: 28px; 
+    margin-bottom: 20px;
+    color: #fff; 
+}
+
+.info p {
+    text-align: left;
+    font-size: 18px; 
+    line-height: 1.6;
 }

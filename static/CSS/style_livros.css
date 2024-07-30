@@ -42,8 +42,7 @@ main{
     cursor: pointer;
 }
 
-
-input[type="submit"] {
+.botao-verde {
     background-color: #28a745;
     color: #fff; 
     border: none;
@@ -55,17 +54,17 @@ input[type="submit"] {
     margin-right: 10px;
 }
 
-input[type="submit"]:hover {
+.botao-verde:hover {
     background-color: #218838; 
     transform: scale(1.05); 
 }
 
-input[type="submit"]:active {
+.botao-verde:active {
     background-color: #1e7e34; 
     transform: scale(1); 
 }
 
-button[type="button"] {
+.botao-vermelho {
     background-color: #dc3545; 
     color: #fff; 
     border: none;
@@ -76,12 +75,12 @@ button[type="button"] {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-button[type="button"]:hover {
+.botao-vermelho:hover {
     background-color: #c82333; 
     transform: scale(1.05);
 }
 
-button[type="button"]:active {
+.botao-vermelho:active {
     background-color: #bd2130; 
     transform: scale(1);
 }
@@ -90,7 +89,6 @@ input[type="text"],
 select, 
 textarea {
     border: 1px solid #ccc;
-    border-radius: 5px; 
     padding: 10px;
     width: 100%; 
     font-size: 16px; 
@@ -128,6 +126,7 @@ textarea {
 }
 
 .btn-search {
+    margin-top: -10px;
     background-color: #005EFF;
     border: none;
     color: #fff;
@@ -153,13 +152,19 @@ textarea {
     color: #fff;
 }
 
-.form-control {
-    width: 600px;
-    padding: 15px;
+.search-form {
+    display: flex;
+    align-items: center;
     margin-top: 40px;
+}
+
+.form-control {
+    flex: 1;
+    padding: 15px;
     background-color: white;
     border: none;
     border-radius: 40px;
+    margin-right: 10px;
 }
 
 

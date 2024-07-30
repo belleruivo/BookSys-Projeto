@@ -17,10 +17,10 @@
             <form action="/livros" method="get" class="search-form">
                 <input class="form-control" type="text" name="search" placeholder="Buscar por livro">
                 <input class="btn-search" type="submit" value="Buscar">
-            </form>
+            </form> 
         </div>
     </div>
-
+    
     <div class="card-container">
         {% for livro in livros %}
         <div class="card">
@@ -38,7 +38,7 @@
                 <label for="titulo">Título do livro:</label>
                 <input type="text" id="titulo" name="titulo" required><br><br>
                 
-                <label for="isbn">ISBN:</label>
+                <label for="isbn">ISBN (Sem traços):</label>
                 <input type="text" id="isbn" name="isbn" required><br><br>
                 
                 <label for="autor">Autor:</label>
@@ -71,7 +71,7 @@
                 <label for="edit-titulo">Título do livro:</label>
                 <input type="text" id="edit-titulo" name="titulo" required><br><br>
                 
-                <label for="edit-isbn">ISBN:</label>
+                <label for="edit-isbn">ISBN(Sem traços):</label>
                 <input type="text" id="edit-isbn" name="isbn" required><br><br>
                 
                 <label for="edit-autor">Autor:</label>
@@ -90,8 +90,8 @@
                 <textarea id="edit-descricao" name="descricao" required></textarea><br><br>
                 
                 <input type="hidden" id="edit-id_livro" name="id_livro">
-                <input type="submit" value="Atualizar">
-                <button type="button" id="deleteButton" style="display:none" onclick="deleteLivro()">Apagar Livro</button>
+                <input class="botao-verde" type="submit" value="Atualizar">
+                <button class="botao-vermelho" type="button" id="deleteButton" style="display:none" onclick="deleteLivro()">Apagar Livro</button>
             </form> 
         </div>
     </div>

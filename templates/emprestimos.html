@@ -3,8 +3,8 @@
 {% block title %}BookSys | Empréstimos{% endblock %}
 
 {% block styles %}
-<link rel="icon" href="../static/img/logo.png" type="image/png">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style_emprestimos.css') }}">
+    <link rel="icon" href="../static/img/logo.png" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_emprestimos.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -25,7 +25,8 @@
         {% for emprestimo in emprestimos %}
         <div class="card">
             <div class="card-header">
-                <h2 style="text-align: left;"><strong>Livro:</strong> {{ emprestimo['titulo'] }}</h2>
+                <h2 style="text-align: left;"><strong>Livro:</strong> {{ emprestimo['nome_livro'] }}</h2>
+
                 <div class="card-button">
                     <button style="border: none;" onclick="openEditModal('{{ emprestimo['id_emprestimo'] }}', '{{ emprestimo['nome_usuario'] }}', '{{ emprestimo['id_livro'] }}', '{{ emprestimo['data_emprestimo'] }}', '{{ emprestimo['data_devolucao'] }}')">Editar</button>
                     <a href="/confirmar_devolucao?id_emprestimo={{ emprestimo['id_emprestimo'] }}" onclick="return confirm('Tem certeza que deseja confirmar a devolução deste empréstimo?')">Confirmar Devolução</a>
@@ -34,7 +35,6 @@
         </div>
         {% endfor %}
     </div>
-    
 
     <div id="cadastroModal" class="modal">
         <div class="modal-content">
@@ -44,13 +44,13 @@
                 <label for="nome_usuario">Nome do Usuário:</label>
                 <input type="text" id="nome_usuario" name="nome_usuario" required><br><br>
                 
-                <label for="id_livro">Livro:</label>
-                <select id="id_livro" name="id_livro" required>
+                <label for="edit_id_livro">Livro:</label>
+                <select id="edit_id_livro" name="id_livro" required>
                     {% for livro in livros %}
                     <option value="{{ livro['id'] }}">{{ livro['titulo'] }}</option>
                     {% endfor %}
-                </select><br><br>
-                
+                </select>
+                <br><br>
                 <label for="data_emprestimo">Data do Empréstimo:</label>
                 <input type="date" id="data_emprestimo" name="data_emprestimo" required><br><br>
                 
@@ -62,34 +62,30 @@
         </div>
     </div>
 
-<div id="editModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeEditModal()">&times;</span>
-        <h1>Editar Empréstimo</h1>
-        <form id="editForm" action="/editar_emprestimo" method="post">
-            <input type="hidden" id="edit_id_emprestimo" name="id_emprestimo">
-            
-            <label for="edit_nome_usuario">Nome do Usuário:</label>
-            <input type="text" id="edit_nome_usuario" name="nome_usuario" required><br><br>
-            
-            <label for="edit_id_livro">Livro:</label>
-            <select id="edit_id_livro" name="id_livro" required>
-                {% for livro in livros %}
-                <option value="{{ livro['id'] }}">{{ livro['titulo'] }}</option>
-                {% endfor %}
-            </select><br><br>
-            
-            <label for="edit_data_emprestimo">Data do Empréstimo:</label>
-            <input type="date" id="edit_data_emprestimo" name="data_emprestimo" required><br><br>
-            
-            <label for="edit_data_devolucao">Data de Devolução:</label>
-            <input type="date" id="edit_data_devolucao" name="data_devolucao" required><br><br>
-            
-            <button class="btn-enviar" type="submit">Salvar</button>
-        </form>
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h1>Editar Empréstimo</h1>
+            <form id="editForm" action="/editar_emprestimo" method="post">
+                <input type="hidden" id="edit_id_emprestimo" name="id_emprestimo">
+                
+                <label for="edit_nome_usuario">Nome do Usuário:</label>
+                <input type="text" id="edit_nome_usuario" name="nome_usuario" required><br><br>
+                
+                <label for="edit_titulo_livro">Livro:</label>
+                <input type="text" id="edit_titulo_livro" name="titulo_livro" readonly><br><br> 
+                
+                <label for="edit_data_emprestimo">Data do Empréstimo:</label>
+                <input type="date" id="edit_data_emprestimo" name="data_emprestimo" required><br><br>
+                
+                <label for="edit_data_devolucao">Data de Devolução:</label>
+                <input type="date" id="edit_data_devolucao" name="data_devolucao" required><br><br>
+                
+                <button class="btn-enviar" type="submit">Salvar Alterações</button>
+            </form>
+        </div>
     </div>
-</div>
-
+    
     
     <script src="{{ url_for('static', filename='JS/script_emprestimos.js') }}"></script>
 </body>

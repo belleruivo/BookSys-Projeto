@@ -9,13 +9,50 @@
 
 {% block content %}
 <div class="home-container">
-    <img src="{{ url_for('static', filename='img/home-image.jpg') }}" alt="Descrição da imagem" class="home-image">
+    <img src="{{ url_for('static', filename='img/foto_home.png') }}" alt="Descrição da imagem" class="home-image">
+    <br><br><br>
+    <div class="card-container">
+        <div class="card">
+            <h2>Biblioteca: {{ library_name }}</h2>
+            <p>Bem-vindo(a) ao sistema de gerenciamento da biblioteca "{{ library_name }}".</p>
+        </div>
+        <div class="card">
+            <h2>Livros Cadastrados</h2>
+            <p>Total: {{ num_livros }}</p>
+        </div>
+        <div class="card">
+            <h2>Livros Emprestados</h2>
+            <p>Total: {{ num_emprestados }}</p>
+        </div>
+        <div class="card">
+            <h2>Atrasos</h2>
+            <p>Total: {{ num_atrasos }}</p>
+        </div>
+    </div>
+
+    <div class="info">
+         <h1>Sobre nós</h1>
+         <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No BookSys, oferecemos uma solução inteligente e eficiente para o gerenciamento de bibliotecas, desenvolvida com Python. Simplifique a administração da sua biblioteca e proporcione uma experiência organizada e sem complicações.
+         </p>
+    </div>
 
     <div class="intro-text">
-        <p>Tenha controle total sobre os empréstimos de livros da sua biblioteca. Registre, acompanhe e gerencie facilmente cada empréstimo.</p>
-        <p>Mantenha seu acervo sempre organizado. Cadastre novos livros e edite informações de uma forma fácil.</p>
-        <p>Fique de olho nos empréstimos atrasados. Receba alertas internos e garanta a devolução pontual dos livros.</p>
+        <h1>Controle</h1>
+        <div class="card-texts">
+            <p class="destaque">Tenha controle total sobre os empréstimos de livros da sua biblioteca. Registre, acompanhe e gerencie facilmente cada empréstimo.</p>
+        </div>
+        <h1>Organização</h1>
+        <div class="card-texts">
+            <p class="destaque">Mantenha seu acervo sempre organizado. Cadastre novos livros e edite informações de uma forma fácil.</p>
+        </div>
+        <h1>Lembretes</h1>
+        <div class="card-texts">
+            <p class="destaque">Fique de olho nos empréstimos atrasados. Receba alertas internos e garanta a devolução pontual dos livros.</p>
+        </div>
     </div>
+    
+<br><br>
     <div class="card-container">
         <div class="card">
             <h2>Nossos Serviços</h2>
@@ -34,5 +71,7 @@
         </div>
     </div>
 </div>
+
+<!-- <script src="{{ url_for('static', filename='JS/script_home.js') }}"></script> -->
 {% endblock %}
 {% block show_footer %}true{% endblock %}
