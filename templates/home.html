@@ -13,22 +13,22 @@
     <br><br><br>
     <div class="card-container">
         <div class="card">
-            <h2>Biblioteca: {{ library_name }}</h2>
-            <p>Bem-vindo(a) ao sistema de gerenciamento da biblioteca "{{ library_name }}".</p>
+            <h2 class="titulo-bibli">Biblioteca: {{ library_name }}</h2>
         </div>
         <div class="card">
             <h2>Livros Cadastrados</h2>
-            <p>Total: {{ num_livros }}</p>
+            <p><span class="highlight">Total: {{ num_livros }}</span></p>
         </div>
         <div class="card">
             <h2>Livros Emprestados</h2>
-            <p>Total: {{ num_emprestados }}</p>
+            <p><span class="highlight">Total: {{ num_emprestados }}</span></p>
         </div>
         <div class="card">
             <h2>Atrasos</h2>
-            <p>Total: {{ num_atrasos }}</p>
+            <p><span class="highlight">Total: {{ num_atrasos }}</span></p>
         </div>
     </div>
+    
 
     <div class="info">
          <h1>Sobre nós</h1>

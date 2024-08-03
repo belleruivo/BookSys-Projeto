@@ -1,0 +1,119 @@
+body {
+    background-color: rgb(5, 0, 54);
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    background-color: rgb(5, 0, 54);
+    padding: 60px 20px 20px; 
+    min-height: 106vh;
+}
+
+
+.perfil-container {
+    max-width: 800px;
+    margin: 40px auto; 
+    padding: 20px;
+    background-color: #333;
+    border-radius: 10px;
+}
+
+.profile-info, .profile-actions {
+    margin-bottom: 20px;
+}
+
+.profile-info p, .profile-info h2, .profile-actions h2 {
+    margin-left: 10px;
+}
+
+/* Estilo do Header */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #222;
+    border-radius: 10px;
+}
+
+.header-text {
+    color: #fff;
+    font-size: 24px;
+}
+
+.profile-actions label {
+    display: block;
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+
+.profile-actions input[type="email"], .profile-actions input[type="password"], .profile-actions input[type="text"] {
+    width: calc(100% - 20px);
+    margin-left: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-actions input[type="email"]:focus, .profile-actions input[type="password"]:focus, .profile-actions input[type="text"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(38, 143, 255, 0.5);
+    outline: none;
+}
+
+.profile-actions button {
+    background-color: #005EFF;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-left: 10px;
+}
+
+.profile-actions button:hover {
+    background-color: #004bb5;
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .card {
+        width: 100%;
+    }
+    
+    .perfil-container {
+        padding: 10px;
+    }
+}
+
+.delete-form {
+    display: flex;
+    justify-content: flex-end; 
+    margin-top: 20px;
+}
+
+.delete-button {
+    background-color: #dc3545; 
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+}
+

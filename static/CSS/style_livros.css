@@ -85,7 +85,7 @@ main{
     transform: scale(1);
 }
 
-input[type="text"], 
+/* input[type="text"], 
 select, 
 textarea {
     border: 1px solid #ccc;
@@ -103,7 +103,7 @@ textarea:focus {
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(38, 143, 255, 0.5);
     outline: none; 
-}
+} */
 
 textarea {
     resize: vertical; 
@@ -125,16 +125,7 @@ textarea {
     top: 20px; 
 }
 
-.btn-search {
-    margin-top: -10px;
-    background-color: #005EFF;
-    border: none;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 16px;
-}
+
 
 .header-container {
     display: flex;
@@ -167,6 +158,20 @@ textarea {
     margin-right: 10px;
 }
 
+.btn-search {
+    background-color: #005EFF;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+
+input::placeholder {
+    font-size: 16px;
+}
 
 textarea {
     width: 100%;
@@ -181,26 +186,42 @@ select {
     box-sizing: border-box;
 }
 
-
 .card-container {
     display: flex;
     flex-direction: column;
     gap: 20px;
     padding: 20px;
-    
 }
 
 .card {
     background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 40px;
-    padding: 20px;
-    width: 95%; 
+    border-radius: 20px;
+    padding: 10px;
+    width: 99%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    position: relative; 
-    gap: 10px; 
+    position: relative;
+    gap: 10px;
+    min-height: 40px; /* Aumente este valor conforme necessário */
+}
+
+.card-header {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between;
+}
+
+
+.card-button button, .card-button a {
+    background-color: #005EFF;
+    color: #fff;
+    padding: 10px 20px; 
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
 }
 
 .card h2 {
@@ -208,26 +229,7 @@ select {
     flex: 1; 
 }
 
-.card button {
-    background-color: #005EFF;
-    border: none;
-    color: #fff;
-    padding: 10px 20px; 
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 16px;
-    position: absolute; 
-    right: 20px; 
-    bottom: 15px; 
-}
-
 .card button:hover {
     background-color: #0056b3;
 }
 
-.card-header {
-    display: flex;
-    align-items: center; 
-    justify-content: space-between; 
-    margin-bottom: 10px; 
-}

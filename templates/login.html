@@ -48,20 +48,14 @@
                       window.location.href = data.redirect_url;
                   });
               } else {
-                  let errorMessage = '';
-                  if (data.message === 'email_incorreto') {
-                      errorMessage = 'Email incorreto. Verifique seu email e tente novamente.';
-                  } else if (data.message === 'senha_incorreta') {
-                      errorMessage = 'Senha incorreta. Verifique sua senha e tente novamente.';
-                  }
-                  
                   Swal.fire({
                       icon: 'error',
                       title: 'Erro!',
-                      text: errorMessage
+                      text: data.message  // Usa diretamente a mensagem do servidor
                   });
               }
           }).catch(error => console.error('Error:', error));
     });
 </script>
+
 {% endblock %}

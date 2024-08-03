@@ -30,9 +30,17 @@ main{
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
-    width: 250px;
+    width: 200px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: left;
+    text-align: center;
+}
+
+.titulo-bibli {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    height: 100%;
 }
 
 .card h2 {
@@ -43,7 +51,15 @@ main{
 
 .card p {
     color: #666;
-    font-size: 16px;
+    font-size: 14px; 
+    line-height: 1.2;
+}
+
+.card p .highlight {
+    font-size: 25px; 
+    font-weight: bold; 
+    color: #4e4e4e; 
+    vertical-align: middle; 
 }
 
 .card button {

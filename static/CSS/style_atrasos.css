@@ -17,6 +17,10 @@ main {
     max-width: 80%;
     color: #fff;
 }
+w
+.td {
+    background-color: rgb(0, 128, 21);
+}
 
 .btn-link {
     background-color: #005EFF;
@@ -32,16 +36,11 @@ main {
 }
 
 .btn-action {
-    background-color: #005EFF;
+    margin-right: -20px;
     color: #fff;
-    padding: 10px 20px;
-    border-radius: 20px;
+    padding: 10px 10px;
     text-decoration: none;
     font-size: 16px;
-}
-
-.btn-action:hover {
-    background-color: #004bb5;
 }
 
 .table-container {
@@ -65,4 +64,9 @@ thead {
 
 thead th {
     font-weight: bold;
+}
+
+tbody{
+    color: white;
+    background-color: black;
 }

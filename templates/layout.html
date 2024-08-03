@@ -28,7 +28,7 @@
                 <ul class="navbar-menu">
                     {% if 'id' in session %}
                         <li class="navbar-item navbar-icon"><a href="{{ url_for('logout') }}" class="navbar-link_logout"><i class="fas fa-sign-out-alt"></i></a></li>
-                        <li class="navbar-item navbar-icon"><a href="#" class="navbar-link_logout"><i class="fas fa-user"></i></a></li>
+                        <li class="navbar-item navbar-icon"><a href="{{ url_for('perfil') }}" class="navbar-link_logout"><i class="fas fa-user"></i></a></li>
                     {% else %}
                         <li class="navbar-item"><a href="{{ url_for('login') }}" class="navbar-link">Login</a></li>
                     {% endif %}
