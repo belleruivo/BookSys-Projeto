@@ -31,7 +31,7 @@
         {% for livro in livros %}
         <div class="card">
             <div class="card-header">
-                <h2 style="text-align: left;"><strong>Livro:</strong>{{ livro['titulo'] }}</h2>
+                <h2 style="text-align: left;"><strong>Livro: </strong>{{ livro['titulo'] }}</h2>
     
                 <div class="card-button">
                     <button style="border: none;" onclick="openEditModal('{{ livro['id'] }}', '{{ livro['titulo'] }}', '{{ livro['isbn'] }}', '{{ livro['autor'] }}', '{{ livro['genero'] }}', '{{ livro['descricao'] }}')">Editar</button>
@@ -40,7 +40,6 @@
         </div>
         {% endfor %}
     </div>
-    
     
     <div id="cadastroModal" class="modal">
         <div class="modal-content">

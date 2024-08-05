@@ -85,26 +85,6 @@ main{
     transform: scale(1);
 }
 
-/* input[type="text"], 
-select, 
-textarea {
-    border: 1px solid #ccc;
-    padding: 10px;
-    width: 100%; 
-    font-size: 16px; 
-    box-sizing: border-box; 
-    margin-bottom: 10px; 
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; 
-}
-
-input[type="text"]:focus,
-select:focus,
-textarea:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(38, 143, 255, 0.5);
-    outline: none; 
-} */
-
 textarea {
     resize: vertical; 
     min-height: 100px; 
@@ -124,8 +104,6 @@ textarea {
     right: 20px; 
     top: 20px; 
 }
-
-
 
 .header-container {
     display: flex;
@@ -168,7 +146,6 @@ textarea {
     font-size: 16px;
 }
 
-
 input::placeholder {
     font-size: 16px;
 }
@@ -204,7 +181,7 @@ select {
     flex-direction: column;
     position: relative;
     gap: 10px;
-    min-height: 40px; /* Aumente este valor conforme necessário */
+    min-height: 40px; 
 }
 
 .card-header {

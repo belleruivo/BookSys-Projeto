@@ -28,7 +28,12 @@ main {
     margin-left: 10px;
 }
 
-/* Estilo do Header */
+.profile-actions .form-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
 .header-container {
     display: flex;
     justify-content: space-between;
@@ -80,7 +85,6 @@ main {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    margin: 0 5px; /* Espaçamento entre os botões */
 }
 
 .profile-actions button:hover {
@@ -108,18 +112,13 @@ main {
     transform: scale(1.05);
 }
 
-/* Alinha os botões na mesma linha */
 .form-buttons {
     display: flex;
-    gap: 10px; /* Espaçamento entre os botões */
+    gap: 10px; 
     justify-content: flex-end;
 }
 
 @media (max-width: 768px) {
-    .card {
-        width: 100%;
-    }
-    
     .perfil-container {
         padding: 10px;
     }

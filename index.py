@@ -2,6 +2,16 @@ from flask import Flask, render_template, request, redirect, session, jsonify
 import datetime
 import pymysql
 
+# flask: classe principal para a aplicacao web, pra criar instancias
+# render template: renderiza arquivos html com dados dinamicos
+# a request: contem dados de solicitacao feita pelo cliente, com dados de formularios get ou post
+# redirect: redireciona pra outra url
+# session: armazena dados do usuarios, como informacoes de login
+# jsonfy: funcao q converte  dados em JSON
+
+# date time: para obter datas e hora
+# pymysql: biblioteca q fornece interface para interagir com banco de dados
+
 # importacoes
 
 app = Flask(__name__)
@@ -12,6 +22,8 @@ db = pymysql.connect(host="localhost", user="root", password="", database="proje
 
 # funcao
 @app.route("/", methods=['GET', 'POST'])
+# o get exibe o form de login
+# o post processa o login, credenciais e inicia sessao
 def login():
     if request.method == 'POST':
         email = request.form.get('email').strip()  # remove espaços em branco ao redor do email
@@ -19,7 +31,12 @@ def login():
 
         cursor = db.cursor()
 
+        # usamos o marcador `%s` nas consultas SQL para garantir a segurança contra injeções SQL
         cursor.execute("SELECT * FROM usuarios WHERE email = %s", (email,))
+        # o fetch one: utilizado quando você espera apenas um único registro ou apenas precisa do primeiro registro do conjunto de resultados
+        # aqui ele ta recuperando uma unica linha sobre o email fornecido
+        # caso um usuario com esse email existir, usuario será uma tupla com os dados dessa linha e se não existir, usuario será None
+
         usuario = cursor.fetchone()
 
         if usuario:
@@ -152,9 +169,12 @@ def livros():
         cursor.execute(sql, (id_usuario,))
 
     results = cursor.fetchall()
+    # o fetch all: utilizado quando você espera que a consulta retorne múltiplas linhas e deseja processar todas elas
 
+    # livros é uma lista onde cada item é um dicionário representando um livro
     livros = []
     for row in results:
+        # dicionario: aqui cada item da lista livros é um dicionário com chaves como 'id', 'titulo', 'isbn', etc., representando os dados de um livro
         livros.append({
             'id': row[0],
             'titulo': row[1],
@@ -338,7 +358,9 @@ def atrasos():
     id_usuario = session['id']
     
     cursor = db.cursor()
-    
+
+    # CURDATE() retornará 2024-08-05 se hoje é 5 de agosto de 2024
+
     # SQL para encontrar livros que passaram da data de devolução e não foram devolvidos
     sql = """SELECT e.id_emprestimo, e.nome_usuario, l.titulo AS nome_livro, e.data_emprestimo, e.data_devolucao
              FROM emprestimos e

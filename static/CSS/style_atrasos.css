@@ -17,8 +17,9 @@ main {
     max-width: 80%;
     color: #fff;
 }
-w
+
 .td {
+    text-align: center;
     background-color: rgb(0, 128, 21);
 }
 
@@ -36,7 +37,6 @@ w
 }
 
 .btn-action {
-    margin-right: -20px;
     color: #fff;
     padding: 10px 10px;
     text-decoration: none;
