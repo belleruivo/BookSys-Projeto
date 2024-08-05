@@ -180,3 +180,16 @@ select {
     margin: 0; 
     flex: 1; 
 }   
+
+.alert {
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 5px;
+}
+
+.alert-warning {
+    background-color: #ffcc00;
+    color: #000;
+    border: 1px solid #e6c200;
+}
+

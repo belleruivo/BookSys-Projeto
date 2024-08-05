@@ -163,8 +163,13 @@ def livros():
             'genero': row[4],
             'descricao': row[5]
         })
+    
+    mensagem = None
 
-    return render_template("livros.html", livros=livros, show_navbar=True, show_footer=True)
+    if search and not livros:
+        mensagem = "Livro não encontrado."
+
+    return render_template("livros.html", livros=livros, show_navbar=True, show_footer=True, mensagem=mensagem)
 
 @app.route("/deletar_livro", methods=['GET'])
 def deletar_livro():
@@ -255,7 +260,12 @@ def emprestimos():
             'titulo': row[1]
         })
 
-    return render_template("emprestimos.html", emprestimos=emprestimos, livros=livros, show_navbar=True, show_footer=True)
+    mensagem = None
+
+    if search and not emprestimos:
+        mensagem = "Livro emprestado não encontrado."
+
+    return render_template("emprestimos.html", emprestimos=emprestimos, livros=livros, show_navbar=True, show_footer=True, mensagem=mensagem)
 
 @app.route("/editar_emprestimo", methods=['POST'])
 def editar_emprestimo():
