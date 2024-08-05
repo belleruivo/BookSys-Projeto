@@ -12,7 +12,6 @@ main {
     min-height: 106vh;
 }
 
-
 .perfil-container {
     max-width: 800px;
     margin: 40px auto; 
@@ -51,7 +50,9 @@ main {
     margin-left: 10px;
 }
 
-.profile-actions input[type="email"], .profile-actions input[type="password"], .profile-actions input[type="text"] {
+.profile-actions input[type="email"], 
+.profile-actions input[type="password"], 
+.profile-actions input[type="text"] {
     width: calc(100% - 20px);
     margin-left: 10px;
     margin-bottom: 15px;
@@ -62,7 +63,9 @@ main {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.profile-actions input[type="email"]:focus, .profile-actions input[type="password"]:focus, .profile-actions input[type="text"]:focus {
+.profile-actions input[type="email"]:focus, 
+.profile-actions input[type="password"]:focus, 
+.profile-actions input[type="text"]:focus {
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(38, 143, 255, 0.5);
     outline: none;
@@ -77,12 +80,39 @@ main {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-left: 10px;
+    margin: 0 5px; /* Espaçamento entre os botões */
 }
 
 .profile-actions button:hover {
     background-color: #004bb5;
     transform: scale(1.05);
+}
+
+.delete-form {
+    margin: 0;
+}
+
+.profile-actions .delete-button {
+    background-color: #dc3545; 
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.profile-actions .delete-button:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+}
+
+/* Alinha os botões na mesma linha */
+.form-buttons {
+    display: flex;
+    gap: 10px; /* Espaçamento entre os botões */
+    justify-content: flex-end;
 }
 
 @media (max-width: 768px) {
@@ -94,26 +124,3 @@ main {
         padding: 10px;
     }
 }
-
-.delete-form {
-    display: flex;
-    justify-content: flex-end; 
-    margin-top: 20px;
-}
-
-.delete-button {
-    background-color: #dc3545; 
-    color: #fff;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.delete-button:hover {
-    background-color: #c82333;
-    transform: scale(1.05);
-}
-

@@ -17,7 +17,7 @@
     </div>
     <div class="profile-actions">
         <h2>Atualizar Informações</h2>
-        <form action="{{ url_for('atualizar_perfil') }}" method="post">
+        <form action="{{ url_for('atualizar_perfil') }}" method="post" class="update-form">
             <label for="novo_nome">Novo Nome:</label>
             <input type="text" id="novo_nome" name="novo_nome" value="{{ nome }}">
             <label for="novo_email">Novo Email:</label>
@@ -26,10 +26,12 @@
             <input type="password" id="nova_senha" name="nova_senha">
             <label for="novo_nome_biblioteca">Novo Nome da Biblioteca:</label>
             <input type="text" id="novo_nome_biblioteca" name="novo_nome_biblioteca" value="{{ nome_biblioteca }}">
-            <button type="submit">Atualizar</button>
-        </form>
-        <form action="{{ url_for('apagar_conta') }}" method="post" class="delete-form">
-            <button type="submit" class="delete-button">Apagar Conta</button>
+            <div class="form-buttons">
+                <button type="submit">Atualizar</button>
+                <form action="{{ url_for('apagar_conta') }}" method="post" class="delete-form">
+                    <button type="submit" class="delete-button">Apagar Conta</button>
+                </form>
+            </div>
         </form>
     </div>
 </div>
